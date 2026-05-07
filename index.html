@@ -38,7 +38,7 @@
         <span class="gradient-text">擁有 AI 超能力</span>
       </h1>
       <p class="hero-sub">
-        AITerm 是跨平台 AI 智慧終端機，整合多重 AI 供應商、自主代理循環、多資料庫連線與檔案總管。<br />
+        AITerm 是跨平台 AI 智慧終端機，整合多重 AI 供應商、自主代理循環、多資料庫連線、檔案總管與 Telegram 遠端控制。<br />
         基於 <strong>Tauri 2</strong>、<strong>React 19</strong> 與 <strong>Rust</strong> 打造，在 macOS 與 Windows 上提供原生效能。
       </p>
       <div class="hero-actions">
@@ -172,6 +172,7 @@
             <span class="arch-item">AI Router</span>
             <span class="arch-item">DB Manager</span>
             <span class="arch-item">Config / Keyring</span>
+            <span class="arch-item">Telegram Bot API</span>
           </div>
         </div>
         <div class="arch-arrow">
@@ -207,6 +208,7 @@
       <div class="install-tabs">
         <button class="tab-btn active" data-tab="macos">macOS</button>
         <button class="tab-btn" data-tab="windows">Windows</button>
+        <button class="tab-btn" data-tab="telegram">Telegram 遠端</button>
         <button class="tab-btn" data-tab="dev">開發者</button>
       </div>
 
@@ -229,6 +231,21 @@
           <li>前往 <a href="https://github.com/jamesju9999/AITERM/releases/latest" target="_blank" rel="noopener" class="release-link">GitHub Releases</a> 下載最新 <code>-setup.exe</code> 安裝檔</li>
           <li>執行安裝檔，依照指示完成安裝</li>
           <li>從開始選單或桌面捷徑啟動 AITerm</li>
+        </ol>
+      </div>
+
+      <div class="tab-content" id="tab-telegram">
+        <ol class="install-steps">
+          <li>在 Telegram 搜尋 <code>@BotFather</code>，輸入 <code>/newbot</code> 建立一個新 Bot，取得 <strong>Bot Token</strong></li>
+          <li>與你的 Bot 傳送任意訊息，然後開啟瀏覽器訪問以下網址取得 <strong>Chat ID</strong>：
+            <div class="code-block">
+              <button class="copy-btn" data-code="https://api.telegram.org/bot<YOUR_TOKEN>/getUpdates">複製</button>
+              <pre>https://api.telegram.org/bot&lt;YOUR_TOKEN&gt;/getUpdates</pre>
+            </div>
+          </li>
+          <li>在 AITerm 開啟「設定」→「Telegram 遠端控制」，填入 Bot Token 與 Chat ID 並儲存</li>
+          <li>在終端機狀態列點擊 <code>📱 Remote</code> 開關啟用遠端控制</li>
+          <li>現在可以從手機的 Telegram Bot 對話視窗傳送 shell 指令，執行結果將自動回傳至同一對話</li>
         </ol>
       </div>
 
