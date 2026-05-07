@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AITerm — AI 智慧終端機</title>
+  <meta name="description" content="跨平台 AI 智慧終端機，整合多重 AI 供應商、自主代理、多資料庫連線與檔案總管。基於 Tauri 2、React 19 與 Rust 打造。" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="icon.png" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <span class="logo-bracket">[</span>AI<span class="logo-term">Term</span><span class="logo-bracket">]</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">功能</a></li>
+        <li><a href="#architecture">架構</a></li>
+        <li><a href="#install">安裝</a></li>
+        <li><a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener" class="nav-github">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="選單">&#9776;</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">Open Source · Apache 2.0</div>
+      <h1 class="hero-title">
+        讓終端機<br />
+        <span class="gradient-text">擁有 AI 超能力</span>
+      </h1>
+      <p class="hero-sub">
+        AITerm 是跨平台 AI 智慧終端機，整合多重 AI 供應商、自主代理循環、多資料庫連線與檔案總管。<br />
+        基於 <strong>Tauri 2</strong>、<strong>React 19</strong> 與 <strong>Rust</strong> 打造，在 macOS 與 Windows 上提供原生效能。
+      </p>
+      <div class="hero-actions">
+        <a href="https://github.com/jamesju9999/AITERM/releases/latest" target="_blank" rel="noopener" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-6-6h4V4h4v6h4l-6 6zm6 2H6v2h12v-2z"/></svg>
+          立即下載
+        </a>
+        <a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener" class="btn btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          查看原始碼
+        </a>
+      </div>
+      <div class="hero-platforms">
+        <span class="platform-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          macOS Apple Silicon
+        </span>
+        <span class="platform-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+          Windows x64
+        </span>
+      </div>
+    </div>
+
+    <!-- Terminal mockup -->
+    <div class="hero-terminal-wrap">
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+          <span class="terminal-title">AITerm — bash</span>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-line"><span class="prompt">~</span> <span class="cmd">/ai 幫我找出 CPU 佔用最高的前 5 個 process</span></div>
+          <div class="terminal-line output ai-thinking">&#9654; 思考中...</div>
+          <div class="terminal-line output ai-cmd">ps aux --sort=-%cpu | head -6</div>
+          <div class="terminal-line output ai-explain">風險：低 ・ 列出 CPU 使用率最高的 5 個 process</div>
+          <div class="terminal-line output">[執行] &#9654;</div>
+          <div class="terminal-line output muted">USER       PID  %CPU  %MEM  COMMAND</div>
+          <div class="terminal-line output muted">jameschu  1234  45.2   2.1  node</div>
+          <div class="terminal-line output muted">jameschu  5678  12.4   1.8  cargo</div>
+          <div class="terminal-line output muted">...</div>
+          <div class="terminal-line"><span class="prompt">~</span> <span class="cursor">█</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="section features">
+    <div class="container">
+      <h2 class="section-title">核心功能</h2>
+      <p class="section-sub">把 AI 直接嵌入你的工作流，不需要切換視窗</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">&#47;ai</div>
+          <h3>AI 指令工作流</h3>
+          <p>在終端機輸入 <code>/ai &lt;查詢&gt;</code>，即時生成 shell 指令並顯示風險等級，確認後一鍵執行。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#9654;</div>
+          <h3>自主代理循環</h3>
+          <p>輸入 <code>/agent</code> 啟動多步驟代理模式，AI 自動規劃並執行複雜任務，危險操作自動退回手動確認。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128172;</div>
+          <h3>多輪對話側邊欄</h3>
+          <p>終端機旁內建具備上下文記憶的 AI 對話視窗，問題排解、程式碼生成、靈感發想一次搞定。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128452;</div>
+          <h3>多資料庫連線</h3>
+          <p>原生支援 PostgreSQL、MySQL、SQLite、ODBC。DB2 透過內建 Java JDBC Sidecar 在 macOS 與 Windows 均可使用，<strong>無需安裝驅動程式</strong>。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128193;</div>
+          <h3>檔案總管</h3>
+          <p>內建側邊欄檔案瀏覽器，自動追蹤並同步目前終端機的工作目錄，目錄切換即時反映。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#127760;</div>
+          <h3>多語言介面</h3>
+          <p>完整支援英文與繁體中文，可於執行時即時切換，不需重啟。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128272;</div>
+          <h3>多重 AI 供應商</h3>
+          <p>開箱即支援 OpenAI、Anthropic、Ollama（本地端推論）及 OpenAI 相容端點，可依需求切換。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#9881;</div>
+          <h3>需求管理系統</h3>
+          <p>AI 輔助功能討論，自動生成規格文件（SDD）並存入專案結構化目錄，讓想法轉化為可追蹤的規格。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section id="architecture" class="section architecture">
+    <div class="container">
+      <h2 class="section-title">系統架構</h2>
+      <p class="section-sub">現代化桌面應用架構，透過 Tauri IPC 連結高效能 Rust 後端與 React 前端</p>
+
+      <div class="arch-diagram">
+        <div class="arch-layer frontend">
+          <div class="arch-label">前端</div>
+          <div class="arch-items">
+            <span class="arch-item">React 19</span>
+            <span class="arch-item">xterm.js</span>
+            <span class="arch-item">File Explorer</span>
+            <span class="arch-item">Chat Sidebar</span>
+            <span class="arch-item">i18n (en/zh-TW)</span>
+          </div>
+        </div>
+        <div class="arch-arrow">
+          <span>Tauri IPC</span>
+          <svg width="120" height="20" viewBox="0 0 120 20"><defs><marker id="a" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4ade80"/></marker></defs><line x1="0" y1="10" x2="114" y2="10" stroke="#4ade80" stroke-width="1.5" marker-end="url(#a)"/></svg>
+        </div>
+        <div class="arch-layer backend">
+          <div class="arch-label">後端 (Rust)</div>
+          <div class="arch-items">
+            <span class="arch-item">PTY Manager</span>
+            <span class="arch-item">AI Router</span>
+            <span class="arch-item">DB Manager</span>
+            <span class="arch-item">Config / Keyring</span>
+          </div>
+        </div>
+        <div class="arch-arrow">
+          <span>stdin/stdout JSON</span>
+          <svg width="120" height="20" viewBox="0 0 120 20"><defs><marker id="b" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4ade80"/></marker></defs><line x1="0" y1="10" x2="114" y2="10" stroke="#4ade80" stroke-width="1.5" marker-end="url(#b)"/></svg>
+        </div>
+        <div class="arch-layer sidecar">
+          <div class="arch-label">DB2 Sidecar</div>
+          <div class="arch-items">
+            <span class="arch-item">Java 21 JRE</span>
+            <span class="arch-item">IBM JDBC (db2jcc4)</span>
+            <span class="arch-item">macOS ＋ Windows</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tech-stack">
+        <div class="tech-item"><span class="tech-dot rust"></span>Rust</div>
+        <div class="tech-item"><span class="tech-dot react"></span>React 19</div>
+        <div class="tech-item"><span class="tech-dot tauri"></span>Tauri 2</div>
+        <div class="tech-item"><span class="tech-dot java"></span>Java 21</div>
+        <div class="tech-item"><span class="tech-dot ts"></span>TypeScript</div>
+        <div class="tech-item"><span class="tech-dot xterm"></span>xterm.js</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALL -->
+  <section id="install" class="section install">
+    <div class="container">
+      <h2 class="section-title">快速安裝</h2>
+
+      <div class="install-tabs">
+        <button class="tab-btn active" data-tab="macos">macOS</button>
+        <button class="tab-btn" data-tab="windows">Windows</button>
+        <button class="tab-btn" data-tab="dev">開發者</button>
+      </div>
+
+      <div class="tab-content active" id="tab-macos">
+        <ol class="install-steps">
+          <li>前往 <a href="https://github.com/jamesju9999/AITERM/releases/latest" target="_blank" rel="noopener">GitHub Releases</a> 下載最新 <code>.dmg</code> 安裝檔</li>
+          <li>開啟 <code>.dmg</code>，將 AITerm 拖入「應用程式」資料夾</li>
+          <li>若出現「已損毀，無法打開」，在終端機執行：
+            <div class="code-block">
+              <button class="copy-btn" data-code="xattr -cr /Applications/AITerm.app">複製</button>
+              <pre>xattr -cr /Applications/AITerm.app</pre>
+            </div>
+          </li>
+          <li>重新開啟 AITerm</li>
+        </ol>
+      </div>
+
+      <div class="tab-content" id="tab-windows">
+        <ol class="install-steps">
+          <li>前往 <a href="https://github.com/jamesju9999/AITERM/releases/latest" target="_blank" rel="noopener">GitHub Releases</a> 下載最新 <code>-setup.exe</code> 安裝檔</li>
+          <li>執行安裝檔，依照指示完成安裝</li>
+          <li>從開始選單或桌面捷徑啟動 AITerm</li>
+        </ol>
+      </div>
+
+      <div class="tab-content" id="tab-dev">
+        <p style="color:var(--muted);margin-bottom:1rem;">需要 Rust 1.78+、Node.js 20+</p>
+        <div class="code-block">
+          <button class="copy-btn" data-code="git clone https://github.com/jamesju9999/AITERM.git
+cd AITERM
+npm install
+npm run tauri:dev">複製</button>
+          <pre>git clone https://github.com/jamesju9999/AITERM.git
+cd AITERM
+npm install
+npm run tauri:dev</pre>
+        </div>
+      </div>
+
+      <div class="download-cta">
+        <a href="https://github.com/jamesju9999/AITERM/releases/latest" target="_blank" rel="noopener" class="btn btn-primary btn-large">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 16l-6-6h4V4h4v6h4l-6 6zm6 2H6v2h12v-2z"/></svg>
+          前往下載最新版本
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="logo-bracket">[</span>AI<span class="logo-term">Term</span><span class="logo-bracket">]</span>
+          <p>跨平台 AI 智慧終端機</p>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://github.com/jamesju9999/AITERM/releases" target="_blank" rel="noopener">Releases</a>
+          <a href="https://github.com/jamesju9999/AITERM/issues" target="_blank" rel="noopener">回報問題</a>
+          <a href="https://github.com/jamesju9999/AITERM/blob/main/LICENSE" target="_blank" rel="noopener">Apache 2.0</a>
+        </div>
+      </div>
+      <div class="footer-copy">
+        <p>© 2024 James Chu · Licensed under the Apache License 2.0</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
