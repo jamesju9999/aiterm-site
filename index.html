@@ -39,7 +39,7 @@
       </h1>
       <p class="hero-sub">
         AITerm 是跨平台 AI 智慧終端機，整合多重 AI 供應商、自主代理循環、多資料庫連線、檔案總管與 Telegram 遠端控制。<br />
-        基於 <strong>Tauri 2</strong>、<strong>React 19</strong> 與 <strong>Rust</strong> 打造，在 macOS 與 Windows 上提供原生效能。
+        基於 <strong>Tauri 2</strong>、<strong>React 19</strong> 與 <strong>Rust</strong> 打造，在 macOS、Windows 與 Linux 上提供原生效能。
       </p>
       <div class="hero-actions">
         <a href="https://github.com/jamesju9999/AITERM/releases/latest" target="_blank" rel="noopener" class="btn btn-primary download-btn">
@@ -59,6 +59,10 @@
         <span class="platform-tag">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
           Windows x64
+        </span>
+        <span class="platform-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12.504 0c-.155 0-.315.008-.48.021C7.27.488 3.58 4.27 3.58 9.25c0 2.47.947 4.728 2.497 6.43L3.58 24h16.84l-2.497-8.32C19.473 13.978 20.42 11.72 20.42 9.25 20.42 4.13 16.627.218 12.504 0zm0 2c3.454.178 6.416 2.939 6.416 7.25 0 2.046-.773 3.906-2.04 5.308l.002.007L18.916 22H5.084l2.034-7.435.002-.007C5.853 13.156 5.08 11.296 5.08 9.25c0-4.311 2.962-7.072 7.424-7.25z"/></svg>
+          Linux x86_64
         </span>
       </div>
     </div>
@@ -208,6 +212,7 @@
       <div class="install-tabs">
         <button class="tab-btn active" data-tab="macos">macOS</button>
         <button class="tab-btn" data-tab="windows">Windows</button>
+        <button class="tab-btn" data-tab="linux">Linux</button>
         <button class="tab-btn" data-tab="telegram">Telegram 遠端</button>
         <button class="tab-btn" data-tab="dev">開發者</button>
       </div>
@@ -231,6 +236,24 @@
           <li>前往 <a href="https://github.com/jamesju9999/AITERM/releases/latest" target="_blank" rel="noopener" class="release-link">GitHub Releases</a> 下載最新 <code>-setup.exe</code> 安裝檔</li>
           <li>執行安裝檔，依照指示完成安裝</li>
           <li>從開始選單或桌面捷徑啟動 AITerm</li>
+        </ol>
+      </div>
+
+      <div class="tab-content" id="tab-linux">
+        <ol class="install-steps">
+          <li>前往 <a href="https://github.com/jamesju9999/AITERM/releases/latest" target="_blank" rel="noopener" class="release-link">GitHub Releases</a> 下載最新 <code>.AppImage</code> 或 <code>.deb</code></li>
+          <li><strong>AppImage（免安裝）：</strong>
+            <div class="code-block">
+              <button class="copy-btn" data-code="chmod +x AITerm_*.AppImage &amp;&amp; ./AITerm_*.AppImage">複製</button>
+              <pre>chmod +x AITerm_*.AppImage &amp;&amp; ./AITerm_*.AppImage</pre>
+            </div>
+          </li>
+          <li><strong>Debian / Ubuntu .deb：</strong>
+            <div class="code-block">
+              <button class="copy-btn" data-code="sudo dpkg -i aiterm_*.deb">複製</button>
+              <pre>sudo dpkg -i aiterm_*.deb</pre>
+            </div>
+          </li>
         </ol>
       </div>
 
