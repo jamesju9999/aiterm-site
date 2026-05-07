@@ -1,5 +1,35 @@
 // AITerm product site — script.js
 
+// ── Fetch latest release from GitHub API ──
+(async () => {
+  const RELEASES_API = 'https://api.github.com/repos/jamesju9999/AITERM/releases/latest';
+  const downloadBtns = document.querySelectorAll('.download-btn');
+
+  try {
+    const res = await fetch(RELEASES_API, {
+      headers: { Accept: 'application/vnd.github+json' }
+    });
+    if (!res.ok) return;
+
+    const release = await res.json();
+    const releaseUrl = release.html_url;       // e.g. .../releases/tag/v0.1.51
+    const tagName    = release.tag_name;        // e.g. v0.1.51
+
+    downloadBtns.forEach(btn => {
+      btn.href = releaseUrl;
+      const versionSpan = btn.querySelector('.release-version');
+      if (versionSpan) versionSpan.textContent = tagName;
+    });
+
+    // Also update the install step link
+    document.querySelectorAll('.release-link').forEach(a => {
+      a.href = releaseUrl;
+    });
+  } catch {
+    // Network error: keep the static fallback href
+  }
+})();
+
 // ── Tab switching ──
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {

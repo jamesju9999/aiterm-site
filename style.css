@@ -226,6 +226,13 @@ code {
 
 .btn-large { padding: 0.85rem 2rem; font-size: 1rem; }
 
+.release-version {
+  font-size: 0.78em;
+  opacity: 0.75;
+  font-weight: 500;
+  font-family: 'SF Mono', 'Fira Code', monospace;
+}
+
 /* ── TERMINAL MOCKUP ── */
 .hero-terminal-wrap {
   display: flex;
