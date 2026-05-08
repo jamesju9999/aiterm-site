@@ -41,6 +41,17 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
+// ── Linux arch selector ──
+document.querySelectorAll('.linux-arch-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const arch = btn.dataset.arch;
+    document.querySelectorAll('.linux-arch-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.linux-arch-content').forEach(c => c.style.display = 'none');
+    btn.classList.add('active');
+    document.getElementById('linux-' + arch).style.display = 'block';
+  });
+});
+
 // ── Copy buttons ──
 document.querySelectorAll('.copy-btn').forEach(btn => {
   btn.addEventListener('click', () => {

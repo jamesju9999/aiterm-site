@@ -241,24 +241,52 @@
 
       <div class="tab-content" id="tab-linux">
         <div class="install-note" style="background:rgba(248,113,113,0.08);border:1px solid #f87171;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:13px;color:#f87171;">
-          ⚠️ <strong>最低需求：Ubuntu 22.04 LTS</strong>（或提供 <code>libwebkit2gtk-4.1</code> 的發行版）。<br />
-          Ubuntu 20.04 及更早版本<strong>不支援</strong>——Tauri 2 需要 WebKitGTK 4.1。
+          ⚠️ <strong>最低需求：Ubuntu 22.04 LTS</strong>（或提供 <code>libwebkit2gtk-4.1</code> 的發行版）。Ubuntu 20.04 及更早版本<strong>不支援</strong>。
         </div>
-        <ol class="install-steps">
-          <li>前往 <a href="https://github.com/jamesju9999/AITERM/releases/latest" target="_blank" rel="noopener" class="release-link">GitHub Releases</a> 下載最新 <code>.AppImage</code> 或 <code>.deb</code></li>
-          <li><strong>AppImage（免安裝）：</strong>
-            <div class="code-block">
-              <button class="copy-btn" data-code="chmod +x AITerm_*.AppImage &amp;&amp; ./AITerm_*.AppImage">複製</button>
-              <pre>chmod +x AITerm_*.AppImage &amp;&amp; ./AITerm_*.AppImage</pre>
-            </div>
-          </li>
-          <li><strong>Debian / Ubuntu .deb：</strong>
-            <div class="code-block">
-              <button class="copy-btn" data-code="sudo apt install ./aiterm_*.deb">複製</button>
-              <pre>sudo apt install ./aiterm_*.deb</pre>
-            </div>
-          </li>
-        </ol>
+
+        <!-- arch selector -->
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <button class="tab-btn active linux-arch-btn" data-arch="x64" style="font-size:11px;padding:4px 12px;">x86_64（一般 PC）</button>
+          <button class="tab-btn linux-arch-btn" data-arch="arm64" style="font-size:11px;padding:4px 12px;">ARM64（Parallels / Apple Silicon）</button>
+        </div>
+
+        <!-- x64 -->
+        <div class="linux-arch-content" id="linux-x64">
+          <ol class="install-steps">
+            <li>前往 <a href="https://github.com/jamesju9999/AITERM/releases/latest" target="_blank" rel="noopener" class="release-link">GitHub Releases</a>，下載 <code>_x86_64.AppImage</code> 或 <code>_amd64.deb</code></li>
+            <li><strong>AppImage（免安裝，Ubuntu 22.04+）：</strong>
+              <div class="code-block">
+                <button class="copy-btn" data-code="chmod +x AITerm_*_x86_64.AppImage &amp;&amp; ./AITerm_*_x86_64.AppImage">複製</button>
+                <pre>chmod +x AITerm_*_x86_64.AppImage &amp;&amp; ./AITerm_*_x86_64.AppImage</pre>
+              </div>
+            </li>
+            <li><strong>.deb 套件（Ubuntu 24.04+）：</strong>
+              <div class="code-block">
+                <button class="copy-btn" data-code="sudo apt install ./aiterm_*_amd64.deb">複製</button>
+                <pre>sudo apt install ./aiterm_*_amd64.deb</pre>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <!-- arm64 -->
+        <div class="linux-arch-content" id="linux-arm64" style="display:none;">
+          <ol class="install-steps">
+            <li>前往 <a href="https://github.com/jamesju9999/AITERM/releases/latest" target="_blank" rel="noopener" class="release-link">GitHub Releases</a>，下載 <code>_aarch64.AppImage</code> 或 <code>_arm64.deb</code></li>
+            <li><strong>AppImage（免安裝，Ubuntu 22.04+ ARM）：</strong>
+              <div class="code-block">
+                <button class="copy-btn" data-code="chmod +x AITerm_*_aarch64.AppImage &amp;&amp; ./AITerm_*_aarch64.AppImage">複製</button>
+                <pre>chmod +x AITerm_*_aarch64.AppImage &amp;&amp; ./AITerm_*_aarch64.AppImage</pre>
+              </div>
+            </li>
+            <li><strong>.deb 套件（Ubuntu 24.04+ ARM）：</strong>
+              <div class="code-block">
+                <button class="copy-btn" data-code="sudo apt install ./aiterm_*_arm64.deb">複製</button>
+                <pre>sudo apt install ./aiterm_*_arm64.deb</pre>
+              </div>
+            </li>
+          </ol>
+        </div>
       </div>
 
       <div class="tab-content" id="tab-telegram">
