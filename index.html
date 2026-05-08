@@ -240,6 +240,10 @@
       </div>
 
       <div class="tab-content" id="tab-linux">
+        <div class="install-note" style="background:rgba(248,113,113,0.08);border:1px solid #f87171;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:13px;color:#f87171;">
+          ⚠️ <strong>最低需求：Ubuntu 22.04 LTS</strong>（或提供 <code>libwebkit2gtk-4.1</code> 的發行版）。<br />
+          Ubuntu 20.04 及更早版本<strong>不支援</strong>——Tauri 2 需要 WebKitGTK 4.1。
+        </div>
         <ol class="install-steps">
           <li>前往 <a href="https://github.com/jamesju9999/AITERM/releases/latest" target="_blank" rel="noopener" class="release-link">GitHub Releases</a> 下載最新 <code>.AppImage</code> 或 <code>.deb</code></li>
           <li><strong>AppImage（免安裝）：</strong>
@@ -250,8 +254,8 @@
           </li>
           <li><strong>Debian / Ubuntu .deb：</strong>
             <div class="code-block">
-              <button class="copy-btn" data-code="sudo dpkg -i aiterm_*.deb">複製</button>
-              <pre>sudo dpkg -i aiterm_*.deb</pre>
+              <button class="copy-btn" data-code="sudo apt install ./aiterm_*.deb">複製</button>
+              <pre>sudo apt install ./aiterm_*.deb</pre>
             </div>
           </li>
         </ol>
