@@ -53,12 +53,13 @@ document.querySelectorAll('.linux-arch-btn').forEach(btn => {
 });
 
 // ── Copy buttons ──
+const COPIED_LABEL = document.documentElement.lang === 'en' ? 'Copied!' : '已複製！';
 document.querySelectorAll('.copy-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const text = btn.dataset.code;
     navigator.clipboard.writeText(text).then(() => {
       const orig = btn.textContent;
-      btn.textContent = '已複製！';
+      btn.textContent = COPIED_LABEL;
       btn.classList.add('copied');
       setTimeout(() => {
         btn.textContent = orig;
