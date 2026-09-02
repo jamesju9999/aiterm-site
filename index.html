@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AITerm — AI 智慧終端機</title>
-  <meta name="description" content="跨平台 AI 智慧終端機，整合多重 AI 供應商、自主代理、多資料庫連線與檔案總管。基於 Tauri 2、React 19 與 Rust 打造。" />
+  <meta name="description" content="跨平台 AI 智慧終端機。除了雲端模型，更能串接本地端模型省下 token 費用，或用 Claude Code CLI 橋接任何模型。內建自主代理、知識庫、多資料庫與 MCP 工具，基於 Tauri 2、React 19 與 Rust。" />
 
   <link rel="canonical" href="https://aiterm.win/" />
   <link rel="alternate" hreflang="zh-Hant" href="https://aiterm.win/" />
@@ -16,7 +16,7 @@
   <meta property="og:locale" content="zh_TW" />
   <meta property="og:locale:alternate" content="en_US" />
   <meta property="og:title" content="AITerm — AI 智慧終端機" />
-  <meta property="og:description" content="跨平台 AI 智慧終端機，整合多重 AI 供應商、自主代理、多資料庫連線與檔案總管。基於 Tauri 2、React 19 與 Rust 打造。" />
+  <meta property="og:description" content="跨平台 AI 智慧終端機。除了雲端模型，更能串接本地端模型省下 token 費用，或用 Claude Code CLI 橋接任何模型。內建自主代理、知識庫、多資料庫與 MCP 工具，基於 Tauri 2、React 19 與 Rust。" />
   <meta property="og:url" content="https://aiterm.win/" />
   <meta property="og:image" content="https://aiterm.win/og-image.png" />
   <meta property="og:image:width" content="1200" />
@@ -25,7 +25,7 @@
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AITerm — AI 智慧終端機" />
-  <meta name="twitter:description" content="跨平台 AI 智慧終端機，整合多重 AI 供應商、自主代理、多資料庫連線與檔案總管。" />
+  <meta name="twitter:description" content="跨平台 AI 智慧終端機——雲端與本地模型皆可，用本地模型省 token，或用 Claude Code CLI 橋接任何模型。" />
   <meta name="twitter:image" content="https://aiterm.win/og-image.png" />
 
   <link rel="stylesheet" href="style.css" />
@@ -39,7 +39,7 @@
     "name": "AITerm",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "macOS, Windows, Linux",
-    "description": "跨平台 AI 智慧終端機，整合多重 AI 供應商、自主代理、多資料庫連線與檔案總管。基於 Tauri 2、React 19 與 Rust 打造。",
+    "description": "跨平台 AI 智慧終端機。除了雲端模型，更能串接本地端模型省下 token 費用，或用 Claude Code CLI 橋接任何模型。內建自主代理、知識庫、多資料庫與 MCP 工具，基於 Tauri 2、React 19 與 Rust。",
     "url": "https://aiterm.win/",
     "downloadUrl": "https://github.com/jamesju9999/AITERM/releases/latest",
     "softwareLicense": "https://www.apache.org/licenses/LICENSE-2.0",
@@ -80,8 +80,8 @@
         <span class="gradient-text">擁有 AI 超能力</span>
       </h1>
       <p class="hero-sub">
-        AITerm 是跨平台 AI 智慧終端機，整合多重 AI 供應商、自主代理循環、多資料庫連線、檔案總管與 Telegram 遠端控制。<br />
-        基於 <strong>Tauri 2</strong>、<strong>React 19</strong> 與 <strong>Rust</strong> 打造，在 macOS、Windows 與 Linux 上提供原生效能。
+        AITerm 是跨平台 AI 智慧終端機。除了接雲端模型，<strong>更能串接本地端模型，省下 token 費用、資料不外送</strong>；或用 Claude Code CLI 橋接任何你想接的模型。<br />
+        自主代理循環、多資料庫連線、知識庫與 MCP 工具全都內建，基於 <strong>Tauri 2</strong>、<strong>React 19</strong> 與 <strong>Rust</strong> 打造。
       </p>
       <div class="hero-actions">
         <a href="https://github.com/jamesju9999/AITERM/releases/latest" target="_blank" rel="noopener" class="btn btn-primary download-btn">
@@ -145,6 +145,11 @@
           <div class="feature-icon">&#47;ai</div>
           <h3>AI 指令工作流</h3>
           <p>在終端機輸入 <code>/ai &lt;查詢&gt;</code>，即時生成 shell 指令並顯示風險等級，確認後一鍵執行。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128176;</div>
+          <h3>本地模型・省 token 費用</h3>
+          <p>除了雲端供應商，AITerm 也能接 Ollama、LM Studio、oMLX 這類本地 / OpenAI 相容端點——推論在自己機器上跑，<strong>不花 API 費用、資料不外送</strong>，量大的自動化任務尤其划算。或用 Claude Code 橋接，讓 Claude Code CLI 跑在你手邊任何一個供應商上。</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">&#129521;</div>
