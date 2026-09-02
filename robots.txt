@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jamesju9999.github.io/aiterm-site/sitemap.xml
+Sitemap: https://aiterm.win/sitemap.xml

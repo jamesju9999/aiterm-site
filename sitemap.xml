@@ -2,15 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://jamesju9999.github.io/aiterm-site/</loc>
-    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://jamesju9999.github.io/aiterm-site/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jamesju9999.github.io/aiterm-site/en.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://jamesju9999.github.io/aiterm-site/"/>
+    <loc>https://aiterm.win/</loc>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://aiterm.win/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiterm.win/en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiterm.win/"/>
   </url>
   <url>
-    <loc>https://jamesju9999.github.io/aiterm-site/en.html</loc>
-    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://jamesju9999.github.io/aiterm-site/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://jamesju9999.github.io/aiterm-site/en.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://jamesju9999.github.io/aiterm-site/"/>
+    <loc>https://aiterm.win/en.html</loc>
+    <xhtml:link rel="alternate" hreflang="zh-Hant" href="https://aiterm.win/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://aiterm.win/en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://aiterm.win/"/>
   </url>
 </urlset>
