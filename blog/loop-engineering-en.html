@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Designing Autonomous AI: Inside the Architecture of Loop Engineering — AITerm</title>
+  <meta name="description" content="An in-depth look at how orchestrators, sub-agents, and verifiers work together to write and test code safely." />
+  <link rel="canonical" href="https://aiterm.win/blog/loop-engineering-en.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Designing Autonomous AI: Inside the Architecture of Loop Engineering — AITerm" />
+  <meta property="og:description" content="An in-depth look at how orchestrators, sub-agents, and verifiers work together to write and test code safely." />
+  <meta property="og:url" content="https://aiterm.win/blog/loop-engineering-en.html" />
+  <meta property="og:image" content="https://aiterm.win/og-image.png" />
+  <link rel="icon" href="../icon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="blog.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><span class="logo-bracket">[</span>AI<span class="logo-term">Term</span><span class="logo-bracket">]</span></a>
+      <ul class="nav-links">
+        <li><a href="en.html">Blog</a></li>
+        <li><a href="../en.html#taskboard">Task Board</a></li><li><a href="../en.html#features">Features</a></li><li><a href="../en.html#install">Install</a></li>
+        <li><a href="index.html">中文</a></li>
+        <li><a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener" class="nav-github">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <article class="post">
+    <div class="post-inner">
+      <a class="post-back" href="en.html">← All posts</a>
+      <h1 class="post-title">Designing Autonomous AI: Inside the Architecture of Loop Engineering</h1>
+      <div class="post-meta">2026-07-16</div>
+      <p class="post-sub">An in-depth look at how orchestrators, sub-agents, and verifiers work together to write and test code safely.</p>
+      <div class="post-body">
+<p>Here's a rhythm most developers know all too well: type a requirement, the AI replies with code, you say "that part's wrong," it fixes it, you say "keep going" — and this repeats five, ten, twenty times before the task is actually done. You can't step away from the screen, because every single step needs your approval before anything moves forward.</p>
+<p>That's exactly the problem AITerm's LoopStudio is built to solve. The core idea behind it is what we call <strong>Loop Engineering</strong>: <strong>you state the goal once — no back-and-forth required — the AI breaks the task down itself, executes it itself, checks its own work, and only stops once the goal is genuinely complete.</strong></p>
+<figure><img src="images/loop-engineering/01-compare-en.png" alt="Traditional back-and-forth vs. Loop Engineering" loading="lazy"></figure>
+<h2>Why back-and-forth doesn't scale</h2>
+<p>The real problem with the back-and-forth pattern isn't that the AI "isn't smart enough" — it's that <strong>the human becomes a required node in the loop</strong>. The more complex the task and the more steps it has, the longer you have to sit there watching — confirming, correcting, confirming again — and that role ends up consuming attention that could otherwise go somewhere else entirely.</p>
+<p>Worse, many tasks are inherently <strong>multi-stage</strong>: write the code, then add tests, then self-review, then run validation once more. If every stage needs a human to step in, the AI never really gets to demonstrate what "autonomous" actually means — because the pace of progress is always capped by how fast a person can reply.</p>
+<h2>State the Goal Once. The Loop Handles the Rest.</h2>
+<p>Using LoopStudio is straightforward: you set a "goal" and a "stopping condition," hit start, and everything from there on is handled for you.</p>
+<figure><img src="images/loop-engineering/02-architecture-en.png" alt="LoopStudio architecture diagram" loading="lazy"></figure>
+<p>The system is built from three roles:</p>
+<p><strong>The Orchestrator</strong> breaks the goal down. It never writes code or runs commands itself — instead, through a single tool called <code>call_agent</code>, it hands off each sub-task to the right sub-agent: "this part goes to Coder," "this part goes to Tester."</p>
+<p><strong>Sub-agents</strong> are the ones who actually do the work. Each has its own role definition (AITerm ships with nine built-in presets you can use right away — Coder, Tester, Reviewer, DevOps, Security Auditor, Architect, and more). Once a sub-agent gets a task, it calls tools like <code>read_file</code>, <code>write_file</code>, and <code>execute_command</code> on its own to read and write files and run commands, continuing step by step until there's nothing left to do, then reporting the result back to the Orchestrator.</p>
+<p><strong>The Verifier</strong> is what makes the whole loop genuinely autonomous. After every round of the Orchestrator dispatching work, the Verifier takes the stopping condition you set at the start and checks whether the goal has actually been met. If not, it lists what's been accomplished and what's still missing — and that feedback gets written into a running context (<code>sharedContext</code>) that the next round of the Orchestrator reads before continuing to fill in the gaps. This keeps cycling until the Verifier reports "done," or until it hits the maximum number of rounds you configured.</p>
+<p>In other words, <strong>what advances the loop isn't your next reply — it's the Verifier's judgment about the goal.</strong> That's the fundamental difference between Loop Engineering and traditional chat-driven development.</p>
+<h2>Autonomous Doesn't Mean Reckless: The Safety Gate</h2>
+<p>Letting AI run its own loop and execute its own commands sounds a little unnerving — what if it runs something dangerous, or accidentally writes outside the project folder? That's exactly why LoopStudio has a built-in "safety gate."</p>
+<p>Before any sub-agent executes a command, the system does two things: first, it checks the command against a set of rules for what counts as "dangerous" (things like <code>rm -rf</code>, <code>sudo</code>, a forced <code>git push</code>, disk-formatting operations); second, it checks where the command's write target actually lands, making sure it stays inside the project directory you specified — even indirect writes through <code>&gt;</code>, <code>tee</code>, <code>cp</code>, or <code>sed -i</code> get caught and checked. If the write target can't be resolved with confidence, it's treated as unsafe by default rather than waved through.</p>
+<p>If either check trips, there are two outcomes: if you've enabled "full auto" mode, it's approved automatically; if not, the run pauses and a confirmation panel pops up, spelling out exactly what the command is about to do, and waits for your go-ahead. In other words, <strong>the autonomous loop takes "you don't have to keep confirming" off your plate — but the decision on anything risky still sits with you.</strong></p>
+<h2>No Infinite Loops, No Black Boxes</h2>
+<p>Loop Engineering isn't "run until the heat death of the universe" either. The system tracks the last three (agent, task) pairs it's dispatched; if the same agent gets the same task prefix three times in a row, that's treated as a stuck loop and the run aborts on its own, instead of grinding away until it hits your configured round limit. And every step along the way — who was assigned what, which tools got called, what the Verifier had to say — shows up live in the "Execution Trace" panel, so a complex automated process never turns into a black box you can't see inside.</p>
+<h2>The Shift Loop Engineering Makes</h2>
+<p>What Loop Engineering is trying to solve is simple: <strong>hand the job of "keep pushing the task forward" back from the human to a loop that checks its own work.</strong> All you need to do is state the goal and the stopping condition once — from there, the Orchestrator breaks it down, sub-agents do the work, the safety gate keeps watch, and the Verifier signs off, round after round, until the job is genuinely done.</p>
+<p>If you've ever felt dragged along by back-and-forth chat while trying to get through a complex task, it might be worth letting the AI run a loop of its own — you may find you didn't need to sit there watching the whole time after all.</p>
+<hr>
+<p><em>Found this useful? Hit the clap button (you can clap up to 50 times!) and follow me for more on AI-assisted development, autonomous agents, and the tools that are quietly reshaping how software gets built.</em></p>
+      </div>
+    </div>
+  </article>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 AITerm · Apache 2.0 · <a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </footer>
+</body>
+</html>

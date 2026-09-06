@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChatGPT&#x27;s Web App Has No API? So We Built a Bridge Inside the Browser — AITerm</title>
+  <meta name="description" content="You paid for a ChatGPT subscription that unlocks models only the web app can see — and your own tools can&#x27;t touch them. This is the story of how we turned a hidden browser tab into a callable service, and the four layers of anti-bot defense, one proof-of-work puzzle, and a fake-it-till-you-make-it tool-calling scheme we had to build along the way." />
+  <link rel="canonical" href="https://aiterm.win/blog/chatgpt-web-bridge-en.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="ChatGPT&#x27;s Web App Has No API? So We Built a Bridge Inside the Browser — AITerm" />
+  <meta property="og:description" content="You paid for a ChatGPT subscription that unlocks models only the web app can see — and your own tools can&#x27;t touch them. This is the story of how we turned a hidden browser tab into a callable service, and the four layers of anti-bot defense, one proof-of-work puzzle, and a fake-it-till-you-make-it tool-calling scheme we had to build along the way." />
+  <meta property="og:url" content="https://aiterm.win/blog/chatgpt-web-bridge-en.html" />
+  <meta property="og:image" content="https://aiterm.win/og-image.png" />
+  <link rel="icon" href="../icon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="blog.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><span class="logo-bracket">[</span>AI<span class="logo-term">Term</span><span class="logo-bracket">]</span></a>
+      <ul class="nav-links">
+        <li><a href="en.html">Blog</a></li>
+        <li><a href="../en.html#taskboard">Task Board</a></li><li><a href="../en.html#features">Features</a></li><li><a href="../en.html#install">Install</a></li>
+        <li><a href="index.html">中文</a></li>
+        <li><a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener" class="nav-github">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <article class="post">
+    <div class="post-inner">
+      <a class="post-back" href="en.html">← All posts</a>
+      <h1 class="post-title">ChatGPT's Web App Has No API? So We Built a Bridge Inside the Browser</h1>
+      <div class="post-meta">2026-08-13</div>
+      <p class="post-sub">You paid for a ChatGPT subscription that unlocks models only the web app can see — and your own tools can't touch them. This is the story of how we turned a hidden browser tab into a callable service, and the four layers of anti-bot defense, one proof-of-work puzzle, and a fake-it-till-you-make-it tool-calling scheme we had to build along the way.</p>
+      <div class="post-body">
+<p>Here's a situation a lot of subscribers run into: you pay for ChatGPT, the web interface shows you models like <code>gpt-5.6-pro</code> and <code>o3</code>, and they work great in the browser. But try to wire one into your own tooling — a terminal AI assistant, an internal knowledge-base Q&amp;A bot, an autonomous agent loop — and you'll find the officially published API endpoints don't line up with what the web app shows you. Same subscription, but part of it only exists inside a browser tab. It doesn't come out.</p>
+<p>This isn't a bug — it's a deliberate product split. ChatGPT's web frontend talks to its own backend (<code>/backend-api/conversation</code>), a completely different path from the publicly documented Responses API (<code>/backend-api/codex/responses</code>, the Codex endpoint), each maintained and rate-limited on its own. Seeing a model in your browser doesn't mean you can call it from code.</p>
+<h2>Three risks worth naming up front</h2>
+<p>Before getting into how, there are three real costs to this approach, and we put all three, unedited, into the product's own risk disclosure:</p>
+<ol>
+<li><strong>It violates OpenAI's Terms of Service.</strong> Driving a consumer web interface programmatically carries a real risk of account suspension.</li>
+<li><strong>Tool calling is simulated.</strong> The web backend has no native function calling — it's held together with a prompt contract and response parsing, and it will never match the fidelity of a real API.</li>
+<li><strong>The maintenance burden never goes away.</strong> The anti-bot proof-of-work scheme is something the community reverse-engineered. The moment OpenAI tweaks it, the whole path returns 403, and someone has to go chase the new implementation.</li>
+</ol>
+<p>This piece isn't a how-to for bypassing anyone's protections — it's a record of an engineering process where a known risk was put in plain sight, the decision to build it anyway was made deliberately, and every technical choice along the way has a reason attached to it.</p>
+<figure><img src="images/chatgpt-web-bridge/01-compare-en.png" alt="The problem: no API for these models. The fix: a hidden browser tab." loading="lazy"></figure>
+<h2>Why a browser tab, and not a fake browser</h2>
+<p>The obvious first move is to grab an HTTP client, copy every header, cookie, and User-Agent a real browser would send, and hit the API directly. We tried exactly that, and ran straight into Cloudflare's TLS fingerprinting: without the handshake characteristics of a genuine browser, the request never even reaches the application layer — it comes back as a 403 with <code>cf-mitigated: challenge</code> attached.</p>
+<p>Working down the rest of the chain made the conclusion obvious: instead of assembling a fake browser inside Rust, just use a real one. Tauri already ships a WebviewWindow — an honest-to-god system browser component. Hide it (never show the window), let it load <code>chatgpt.com</code> and log in normally, and have every request fired by <strong>JavaScript running inside the page itself</strong>, not simulated from the Rust side.</p>
+<p>That one choice wins the next three layers almost for free:</p>
+<figure><img src="images/chatgpt-web-bridge/03-defense-layers-en.png" alt="Four layers of defense, two identities." loading="lazy"></figure>
+<p>Running inside the page means every fingerprint the browser sends is genuine — real screen size, real core count, real TLS fingerprint, nothing faked. Compare that to server-side implementations of the same idea, which typically have to pick fake values from a hardcoded list to fill in a browser fingerprint — data that's fake enough to eventually mismatch whatever other telemetry OpenAI is cross-checking against.</p>
+<h2>Proof of work: a deliberately designed math quiz</h2>
+<p>Past authentication, there's one more gate: <strong>sentinel</strong>. Before every conversation request, the client has to round-trip two endpoints to get a <code>seed</code> and a <code>difficulty</code>, then compute, inside the browser, a hash whose hex prefix is at or below that difficulty threshold — conceptually a scaled-down version of the proof-of-work Bitcoin mining uses, except here it's SHA3-512, which isn't in the browser's native WebCrypto API, so it has to ship its own implementation (we locked that implementation's correctness down with the standard test vectors for <code>""</code> and <code>"abc"</code>, so it can't silently compute the wrong thing without anyone noticing).</p>
+<p>In practice, <code>difficulty</code> lands around a six hex-digit prefix requirement, with roughly a 2.6% hit rate — meaning it takes only a few dozen hashes and a bit over a hundred milliseconds to solve. The point of this puzzle clearly isn't to stop real compute power; it's to raise the bar high enough that a script thrown together carelessly won't clear it, forcing you to actually run inside a genuine browser environment.</p>
+<p>Once the proof of work is solved, three tokens (the sentinel token, the prepare token, and the proof token) are enough to hit the real conversation endpoint and get back a stream of Server-Sent Events. Testing with "count from 1 to 40" produced 21 chunks of roughly 500 bytes each, a 1295ms wait for the first chunk, and 3645ms total — a pace set entirely by the upstream, since the web app was never designed to stream token-by-token. The IPC layer forwarding those chunks is nowhere near the bottleneck.</p>
+<h2>How the data actually flows: a deliberate detour</h2>
+<p>With auth and proof-of-work solved, the next problem is wiring this hidden browser tab back into the app's other two consumers — the <code>/ai</code> panel and chat window, and the agent loop that speaks the Claude Code bridge protocol.</p>
+<figure><img src="images/chatgpt-web-bridge/02-architecture-en.png" alt="Data flow of the ChatGPT web bridge." loading="lazy"></figure>
+<p>There's an easy wrong turn here. Since a chunk of text has to reach JavaScript inside the browser, why not just <code>eval</code> the whole payload straight into a JS string? Because a Claude Code system prompt routinely runs past thirty thousand characters, and the moment it contains a character that needs escaping, or crosses some length limit, the entire <code>eval</code> string blows up — usually with an error message that tells you almost nothing.</p>
+<p>So the data flow is deliberately split in two: the Rust side only ever uses <code>eval</code> to send a request ID across. The injected script, on receiving that ID, calls back with <code>invoke("chatgpt_web_take", { id })</code>, pulling the full payload back through Tauri's native, structured IPC channel — a pull, not a push. The same ID is reused when the response streams back: each chunk is handed to Rust via <code>invoke("chatgpt_web_chunk", { id, data })</code>, routed to that request's own channel so concurrent requests never collide.</p>
+<h3>Why stateless</h3>
+<p>ChatGPT's web app natively supports maintaining a conversation thread (<code>conversation_id</code> plus <code>parent_message_id</code>), which in theory saves the bandwidth of re-uploading the whole history every time. We deliberately chose the opposite: every request opens a brand-new conversation, with the entire history flattened into one long user message.</p>
+<p>The reasoning is straightforward: maintaining state doesn't buy anything that actually matters. The model still sees the full history either way, and the <code>max_tokens</code> ceiling is exactly where it was — the only thing state saves is bandwidth, not context space. Meanwhile, a Claude Code request is never a straight line — it compacts history, edits past messages, retries on failure, and sometimes fans out into several parallel subagents at once. Force that shape onto ChatGPT's message tree, which expects precise parent-child relationships, and the smallest mismatch makes the context <strong>silently</strong> wrong — the worst failure mode there is, because the request still appears to succeed and nothing on the surface tells you the data has drifted. A stateless design has exactly one failure mode: hit the length ceiling, get back an explicit error — never a quietly corrupted answer.</p>
+<h2>No function calling — so how do you fake one?</h2>
+<p>If the only goal were chatting with a web-only model, everything up to this point would already be enough. But what AITerm actually needs to plug into are tool-calling scenarios — executing commands inside an agent loop, querying a knowledge base, wiring up MCP tools. The web backend has no structured <code>role: "tool"</code> at all; everything has to be forced through plain text.</p>
+<figure><img src="images/chatgpt-web-bridge/04-tool-contract-en.png" alt="No native function calling — so how do you fake one?" loading="lazy"></figure>
+<p>The approach is to inject the full tool contract — the tool list, parameter schemas, output format requirements — right after the client's messages, and append a one-line reminder to the end of the latest user turn as well. This "two-position injection" wasn't a guess. Placing the contract only at the start of a large message block meant that, past roughly thirty thousand characters of prompt, the model would very likely just ignore it and reply that the tool "isn't in my tool set." Injecting it in both places is what made the success rate hold steady across test scenarios spanning thirty thousand to two hundred fifty thousand characters, thirty tools, and multi-turn tool history.</p>
+<p>When the model replies according to the contract, it has to wrap the call in an explicit envelope, like <code>&lt;tool&gt;{...}&lt;/tool&gt;</code>, with a fresh random <code>_nonce</code> generated per request embedded in the JSON. The parser only recognizes that explicit envelope — it never promotes bare JSON into a tool call. That check isn't guarding against the model; it's guarding against <strong>prompt injection</strong>: if content or code a user pastes happens to look like <code>{"name":"Bash","arguments":{...}}</code>, a parser without this check could mistake it for a genuine tool call and execute it. An envelope with a mismatched nonce is treated as plain text and never executed; a missing nonce with an otherwise intact envelope is tolerated as the model not fully following instructions.</p>
+<p>Tool results have to be flattened back into the text history too, marked with their own dedicated delimiters:</p>
+<pre><code>[[tool_call:&lt;name&gt;#&lt;id&gt;]]
+&lt;arguments JSON&gt;
+[[/tool_call]]
+
+[[tool_result:&lt;id&gt;]]
+&lt;result content&gt;
+[[/tool_result]]</code></pre>
+<p>These delimiters are deliberately different from the <code>&lt;tool&gt;</code> envelope the model is asked to output. If both shared the same tags, the parser could mistake a turn we wrote into history ourselves for a new call the model just issued. In theory the nonce check would catch that too — history turns don't carry the current request's nonce — but correctness shouldn't be staked on two layers of probability when separating the tags removes the ambiguity at the source.</p>
+<p>It has to be said plainly: this whole scheme will never match native function calling in fidelity. Over a long multi-turn agent loop, the odds of the model drifting from the contract format are higher than with native tool calling. That's an inherent limit of this transport, not a tradeoff that cleverer prompting can fully close.</p>
+<h2>Login only has to happen once</h2>
+<p>The last piece is the user experience: when should this hidden window ever show itself?</p>
+<p>The answer is exactly one case — when <code>/api/auth/session</code> can't be exchanged for an <code>accessToken</code>. At that point the window is shown, the user logs in with their own credentials (or SSO), and while it's visible the app polls that same endpoint every two seconds; the instant a token comes back, the window hides itself. Skip that step and the window just sits there open with nobody managing it — and a user's natural instinct is to reach over and close it. "Close" and "hide" have very different consequences here: the webview <em>is</em> the transport layer, so <code>close()</code> destroys it and kills any request in flight, while <code>hide()</code> only affects visibility — the browser tab underneath stays alive.</p>
+<p>That's also why this webview has to use the app's default data store, rather than a fresh isolated partition every time, the way some comparable implementations do for the convenience of extracting cookies. Persistence is exactly what we want here — during testing, this window was destroyed and rebuilt by the Rust side six separate times, and every single time <code>/api/auth/session</code> reported the user was already logged in. They only ever logged in once.</p>
+<h2>Was the trade worth it</h2>
+<p>Back to where this started: a subscription with part of its value trapped inside a browser tab. After all of this, the answer is yes — but only with the costs stated plainly.</p>
+<p>Tool-call fidelity really is lower than a native API, context space is capped by whatever the account's actual plan allows (measured at roughly 34,834 tokens on the free tier), and the entire mechanism can break the moment upstream tweaks its verification logic. All of that is in the product's risk disclosure, visible the moment a user picks this provider. We're not pretending this is a stable, official path either — it shares the same subscription quota as the existing Codex provider; what it does is turn models that were locked inside a browser back into something a program can call.</p>
+<p>The genuinely interesting engineering isn't "what got cracked" — it's that behind every decision that looks like a shortcut sits a dumber, more honest alternative that was deliberately passed over: flatten history rather than risk context silently drifting; inject the contract in two places rather than gamble that the model finds the rule on its own; accept lower tool-call fidelity rather than pretend it matches a native API. When a service isn't going to give you an API, the only real choice left is facing every limitation that decision creates honestly, rather than pretending they aren't there.</p>
+<p>If you want to see this bridge running for real, check out AITerm: <strong>https://jamesju9999.github.io/aiterm-site/en.html</strong></p>
+<hr>
+<p><em>Found this useful? Clap (up to 50 times!) and follow for more on AI-assisted development, reverse engineering, and the tools quietly reshaping how people work with AI.</em></p>
+      </div>
+    </div>
+  </article>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 AITerm · Apache 2.0 · <a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </footer>
+</body>
+</html>

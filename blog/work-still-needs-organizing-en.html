@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Tools Got Faster. I Didn&#x27;t. — AITerm</title>
+  <meta name="description" content="The AI could run ten jobs at once. I finished two that evening. The problem was never the model — the work was never organized." />
+  <link rel="canonical" href="https://aiterm.win/blog/work-still-needs-organizing-en.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="My Tools Got Faster. I Didn&#x27;t. — AITerm" />
+  <meta property="og:description" content="The AI could run ten jobs at once. I finished two that evening. The problem was never the model — the work was never organized." />
+  <meta property="og:url" content="https://aiterm.win/blog/work-still-needs-organizing-en.html" />
+  <meta property="og:image" content="https://aiterm.win/og-image.png" />
+  <link rel="icon" href="../icon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="blog.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><span class="logo-bracket">[</span>AI<span class="logo-term">Term</span><span class="logo-bracket">]</span></a>
+      <ul class="nav-links">
+        <li><a href="en.html">Blog</a></li>
+        <li><a href="../en.html#taskboard">Task Board</a></li><li><a href="../en.html#features">Features</a></li><li><a href="../en.html#install">Install</a></li>
+        <li><a href="index.html">中文</a></li>
+        <li><a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener" class="nav-github">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <article class="post">
+    <div class="post-inner">
+      <a class="post-back" href="en.html">← All posts</a>
+      <h1 class="post-title">My Tools Got Faster. I Didn't.</h1>
+      <div class="post-meta">2026-09-06</div>
+      <p class="post-sub">The AI could run ten jobs at once. I finished two that evening. The problem was never the model — the work was never organized.</p>
+      <div class="post-body">
+<p>Last Wednesday evening I wrote down six things I wanted cleared before bed: draft an API spec, backfill a few unit tests, fix a Windows build error, drop some unused dependencies, refactor a login flow, update a README.</p>
+<p>Claude Code could do every one of them. Not "probably manage" — actually <strong>finish</strong> them: read the files, run the commands, read the error, fix it, run again.</p>
+<p>I got through two.</p>
+<p>The AI never got stuck. I did — because I can only watch one thing at a time. Paste the brief, see it start, wait, check the result, start the next one. And the waiting in between wasn't reusable, because I knew that the moment I walked away I'd lose track of where it was, whether it errored, and what I meant to do next.</p>
+<p><strong>My tools got faster. I didn't.</strong></p>
+<hr>
+<h2>The bottleneck moved</h2>
+<p>It is worth noticing that the way we complain about AI has completely changed in two years.</p>
+<p>It used to be "it only does half the job," "I corrected it five times and it's still wrong," "forget it, I'll write it myself." That was a <strong>capability</strong> problem, and the answer was obviously to wait for a better model.</p>
+<p>The models did get better. And the complaints turned into "I don't know if that finished," "I forgot to rerun the one that failed yesterday," "what did I actually ship this week?"</p>
+<p>That is not a capability problem any more.</p>
+<figure><img src="images/work-still-needs-organizing/01-bottleneck-en.png" alt="The bottleneck moved" loading="lazy"></figure>
+<p>Here is the difference that matters: <strong>the first kind of problem improves when you swap the model. The second kind does not.</strong></p>
+<p>A model ten times better will not remember which job is running. If anything it makes things worse — it runs faster and can take on more, while the number of things you can personally track is exactly what it was two years ago.</p>
+<hr>
+<h2>Three gaps a better model does not close</h2>
+<p>I pulled apart what actually stopped me that evening. It was three things, and not one of them was about the model.</p>
+<figure><img src="images/work-still-needs-organizing/02-gaps-en.png" alt="Three gaps a better model does not close" loading="lazy"></figure>
+<p><strong>One: attention doesn't scale with compute.</strong> Running ten AI jobs at once is technically trivial — open ten tabs. What's hard is remembering which is running, which finished, and which failed and needs another go. Human working memory holds something like four or five things at once, and that number does not move because you bought a better GPU.</p>
+<p><strong>Two: the brief decides the output.</strong> The same task, phrased as "tidy up the punch-in API" versus "read the three packet captures under <code>~/Downloads/HCP</code>, produce OpenAPI specs for the login and punch-in endpoints as <code>LoginAndGet.yaml</code> and <code>PounchCard.yaml</code>, with request and response examples," lands in two completely different places.</p>
+<p>The first costs you five rounds of correction. The second lands first time. And writing the second requires you to actually <strong>write it down</strong> — which nobody can do for you, but which is also precisely what turns a task into something you can <strong>hand off</strong>.</p>
+<p><strong>Three: work that vanishes accumulates nothing.</strong> The two things I did finish that night were a vague impression by the next morning. What was done, how, and how it turned out lived in a terminal tab I had already closed. Come the weekly update, I was reconstructing it from memory.</p>
+<p>That isn't work. That's an execution.</p>
+<hr>
+<h2>This is an old problem</h2>
+<p>The interesting part is that our industry solved these three problems a long time ago.</p>
+<p>We invented kanban boards, ticket systems and standups — not because engineers can't write code, but because <strong>when several executors work at once, someone has to organize it</strong>. Who does what, in what order, whether it's done, and where the output went. None of those questions have anything to do with how good any individual executor is.</p>
+<p>So it's strange that the moment AI became an executor, all of that machinery disappeared.</p>
+<p>We treat AI as a smarter autocomplete: open a chat, ask, take the answer, close the tab. No queue, no status, no record. It's like hiring an extremely capable colleague and then refusing to give them a ticket system — everything by verbal handoff and a verbal report afterwards.</p>
+<p>That works when you have one colleague. It stops working when the colleague can do ten things at once.</p>
+<hr>
+<h2>Manage what the AI produces as work</h2>
+<p>Once that lands, the move is obvious: <strong>what the AI executes should be managed the same way what a person executes is managed.</strong></p>
+<p>Write it down, queue it, dispatch it, keep the record.</p>
+<figure><img src="images/work-still-needs-organizing/03-board-en.png" alt="Manage what the AI produces as work" loading="lazy"></figure>
+<p>I built this into the terminal I use every day. Four columns: Planning, Queued, Running, Done. One job is one card — a title, which folder to work in, detailed instructions, attachments if it needs them.</p>
+<p>Drag a card to Queued and you're done thinking about it: a tab opens, Claude Code launches, the brief is delivered, and when it finishes the card moves to Done marked success or failure. How many run at once is yours to set; nothing gets fired off all at once.</p>
+<p>Those six things from Wednesday? Today I'd spend fifteen minutes writing six cards, queue them, and go do something else.</p>
+<hr>
+<h2>The split changed</h2>
+<p>The real shift isn't "saves time." It's that <strong>your role in the process changed</strong>.</p>
+<figure><img src="images/work-still-needs-organizing/04-split-en.png" alt="The split changed: you organize, the AI executes" loading="lazy"></figure>
+<p>You used to be a node in the loop: instruct → wait → confirm → instruct again. The speed of the whole pipeline was capped by how fast you replied.</p>
+<p>Now you do the part only a person does well — <strong>state the work clearly, decide the order, review the result</strong>. The execution in the middle is handed off.</p>
+<p>Which is also how each of those three gaps finds a home:</p>
+<ul>
+<li><strong>Attention</strong> → the card remembers the status for you. What's running, what finished, what failed — one glance, not one more thing held in your head.</li>
+<li><strong>The brief</strong> → because it has to go on a card, you end up thinking through the goal and the done-criteria. (And if you can't be bothered, you can have the AI expand your rough note into a proper brief first — though whether to accept it is still your call.)</li>
+<li><strong>Accumulation</strong> → every finished job keeps its full transcript. Want to know what happened last week? Have the AI read the whole board and write it up as a report. Archive what's finished so the board only holds what's live.</li>
+</ul>
+<hr>
+<h2>In closing</h2>
+<p>I don't think "better models" is the wrong direction. Models should absolutely keep getting better.</p>
+<p>But if you've had that feeling — the tools are this good, so why isn't anything moving faster — the problem may not be the model you picked. It may be that <strong>your work was never organized in the first place</strong>.</p>
+<p>However good AI gets, the work still needs organizing. And for now, that is still your job.</p>
+<hr>
+<p><strong>AITerm</strong> is the cross-platform AI terminal I build. The task board, auto-dispatch, work reports and archive described above are all built in. Open source, Apache 2.0, runs on macOS, Windows and Linux.</p>
+<p>🌐 Website: <a href="https://aiterm.win/" target="_blank" rel="noopener">https://aiterm.win/</a> 💻 Source &amp; downloads: <a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener">https://github.com/jamesju9999/AITERM</a></p>
+<hr>
+<p><em>If this was useful, a few claps go a long way (you can leave up to 50), and follow along — more field notes on AI-assisted development to come.</em></p>
+      </div>
+    </div>
+  </article>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 AITerm · Apache 2.0 · <a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </footer>
+</body>
+</html>

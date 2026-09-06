@@ -13,4 +13,37 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://aiterm.win/en.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://aiterm.win/"/>
   </url>
+  <url>
+    <loc>https://aiterm.win/blog/chatgpt-web-bridge-en.html</loc>
+  </url>
+  <url>
+    <loc>https://aiterm.win/blog/chatgpt-web-bridge.html</loc>
+  </url>
+  <url>
+    <loc>https://aiterm.win/blog/database-natural-language-en.html</loc>
+  </url>
+  <url>
+    <loc>https://aiterm.win/blog/database-natural-language.html</loc>
+  </url>
+  <url>
+    <loc>https://aiterm.win/blog/en.html</loc>
+  </url>
+  <url>
+    <loc>https://aiterm.win/blog/index.html</loc>
+  </url>
+  <url>
+    <loc>https://aiterm.win/blog/knowledge-base-rag.html</loc>
+  </url>
+  <url>
+    <loc>https://aiterm.win/blog/loop-engineering-en.html</loc>
+  </url>
+  <url>
+    <loc>https://aiterm.win/blog/loop-engineering.html</loc>
+  </url>
+  <url>
+    <loc>https://aiterm.win/blog/work-still-needs-organizing-en.html</loc>
+  </url>
+  <url>
+    <loc>https://aiterm.win/blog/work-still-needs-organizing.html</loc>
+  </url>
 </urlset>

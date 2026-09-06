@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>知識庫功能要不要串外部API?AITERM的RAG架構決策紀錄 — AITerm</title>
+  <meta name="description" content="知識庫功能要不要串外部API?AITERM的RAG架構決策紀錄" />
+  <link rel="canonical" href="https://aiterm.win/blog/knowledge-base-rag.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="知識庫功能要不要串外部API?AITERM的RAG架構決策紀錄 — AITerm" />
+  <meta property="og:description" content="知識庫功能要不要串外部API?AITERM的RAG架構決策紀錄" />
+  <meta property="og:url" content="https://aiterm.win/blog/knowledge-base-rag.html" />
+  <meta property="og:image" content="https://aiterm.win/og-image.png" />
+  <link rel="icon" href="../icon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="blog.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><span class="logo-bracket">[</span>AI<span class="logo-term">Term</span><span class="logo-bracket">]</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">文章</a></li>
+        <li><a href="../index.html#taskboard">工作看板</a></li><li><a href="../index.html#features">功能</a></li><li><a href="../index.html#install">安裝</a></li>
+        <li><a href="en.html">EN</a></li>
+        <li><a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener" class="nav-github">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <article class="post">
+    <div class="post-inner">
+      <a class="post-back" href="index.html">← 回到文章列表</a>
+      <h1 class="post-title">知識庫功能要不要串外部API?AITERM的RAG架構決策紀錄</h1>
+      <div class="post-meta">2026-08-03</div>
+      
+      <div class="post-body">
+<h2>前言:一個看起來理所當然、實際上很多陷阱的功能</h2>
+<p>幫AITERM加上知識庫(RAG,檢索增強生成)功能的時候,乍看是個標準做法——把文件切成片段、轉成向量、存進向量資料庫,查詢時先檢索相關片段再丟給LLM生成答案。網路上教學一堆,照著做半天就能跑起來。</p>
+<p>但真正要決定的,不是「RAG怎麼實作」,而是<strong>Embedding供應商要選誰</strong>。這個看似技術細節的選擇,其實決定了這個功能能不能被真正需要它的使用者採用。</p>
+<h2>問題出在哪:Embedding常被忽略的隱私漏洞</h2>
+<p>做RAG的人很容易把注意力全放在「生成答案」這一步用哪個LLM,卻忽略了在那之前還有一個步驟——把使用者的文件內容轉成向量(Embedding)。這一步同樣需要呼叫一個模型,而且它做的事情更敏感:<strong>它要吃進去的是你完整的文件內容,不是你問的那句話</strong>。</p>
+<p>換句話說,就算使用者最後選擇用本地LLM來生成答案,如果Embedding這一步還是打去OpenAI相容的雲端端點,等於文件內容還是原封不動送出去了。這是很多RAG實作會漏掉的一環——大家會很謹慎地確保「對話」不外流,卻沒注意到「餵給知識庫的原始文件」透過Embedding這條路徑,一樣可能外流。</p>
+<p>對AITERM的使用情境來說,這個漏洞尤其致命。我自己在金融系統開發環境裡工作,很清楚有些機房是完全斷外網的,如果知識庫功能背後的Embedding呼叫需要連外部API,這個功能在這類環境下就完全不能用——不是「效果打折」,是「直接掛掉」。</p>
+<h2>決策:Embedding也要走本地路線</h2>
+<p>所以AITERM的知識庫功能,設計上要求Embedding供應商同樣選擇本地端(例如透過Ollama跑<code>nomic-embed-text</code>這類本地embedding模型),而不是預設接OpenAI相容的雲端端點。</p>
+<p>這個決策背後的邏輯跟之前AITERM決定支援本地LLM生成的理由一致,但這次的意義更關鍵——生成答案用不用本地模型,某種程度上使用者可以接受「效果打折但换取隱私」的取捨;但Embedding這一步如果沒做到本地化,前面所有的隱私努力都白費,因為最敏感的原始資料在這一步就已經送出去了。</p>
+<h2>這個決策連動的其他技術取捨</h2>
+<p>一旦確定Embedding要走本地路線,後面幾個設計就跟著被鎖定:</p>
+<p><strong>向量資料庫也必須是本地可運行的。</strong> 如果Embedding產生的向量最後還是存到雲端向量資料庫服務,一樣等於做半套。這代表向量儲存這一層,得選擇能夠完全跑在本地或內網環境的方案,不能圖方便接雲端託管服務。</p>
+<p><strong>離線部署清單必須把本地embedding模型當一等公民。</strong> 在規劃離線環境部署時,不能只想著「準備好推理用的LLM模型」,還要確保embedding模型也一併打包進離線安裝清單——這是我在實際規劃機房斷網部署時,才真正意識到容易被漏掉的一塊。</p>
+<p><strong>資料庫連線本身不受影響,但要清楚劃界。</strong> AITERM原生支援的PostgreSQL/MySQL/SQLite/ODBC/DB2連線,本身就是連內網或本機的資料庫服務,這塊在斷網環境下完全不受影響。但這也代表在設計知識庫功能時,必須很清楚地跟使用者溝通:「哪些功能完全本地閉環」跟「哪些功能(例如Telegram遠端通知)本質上需要外部服務、斷網就會失效」,不能讓使用者誤以為整個工具都是同一種隱私等級。</p>
+<h2>效果打折,但這是刻意的取捨</h2>
+<p>老實說,本地embedding模型的檢索品質,目前普遍還是不如OpenAI或其他雲端embedding服務。這是做這個決策時必須誠實面對的代價。</p>
+<p>但對AITERM鎖定的使用情境——需要在企業內網、機房、甚至完全斷網環境下運作的開發者跟維運人員——「檢索效果打七折,但資料完全不出本機」遠比「檢索效果滿分,但文件內容送去了不知道存放在哪裡的雲端服務」來得重要。這不是技術能力的取捨,而是產品定位的取捨。</p>
+<h2>給同樣在做RAG功能的人的提醒</h2>
+<p>如果你也在幫自己的工具加知識庫功能,尤其是鎖定企業內網或隱私敏感情境的使用者,有幾個問題值得先問清楚,而不是做完才發現漏洞:</p>
+<ul>
+<li>你的Embedding供應商,是不是不小心還是打去了雲端端點?</li>
+<li>你的向量資料庫,存放位置使用者自己知道嗎?</li>
+<li>你有沒有清楚跟使用者說明,工具裡哪些功能是完全本地閉環,哪些本質上一定要連外部服務?</li>
+</ul>
+<p>RAG常被當成一個「標準功能模組」來看待,但一旦你的使用者情境牽涉到隱私或合規要求,魔鬼真的藏在Embedding這一步的供應商選擇裡,而不是大家常常聚焦的生成模型選擇上。</p>
+<p>AITERM的原始碼在 <a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener">github.com/jamesju9999/AITERM</a>,知識庫功能的實作細節歡迎有興趣的人一起討論。</p>
+      </div>
+    </div>
+  </article>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 AITerm · Apache 2.0 · <a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </footer>
+</body>
+</html>

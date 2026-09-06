@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>把任務交給 AI，不用再守著螢幕等它做完 — AITerm</title>
+  <meta name="description" content="循環工程就是讓這件事變可能的方法。這篇文章會介紹 AITerm LoopStudio 怎麼實作它的——以及為什麼它讓我的開發流程整個不一樣了。" />
+  <link rel="canonical" href="https://aiterm.win/blog/loop-engineering.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="把任務交給 AI，不用再守著螢幕等它做完 — AITerm" />
+  <meta property="og:description" content="循環工程就是讓這件事變可能的方法。這篇文章會介紹 AITerm LoopStudio 怎麼實作它的——以及為什麼它讓我的開發流程整個不一樣了。" />
+  <meta property="og:url" content="https://aiterm.win/blog/loop-engineering.html" />
+  <meta property="og:image" content="https://aiterm.win/og-image.png" />
+  <link rel="icon" href="../icon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="blog.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><span class="logo-bracket">[</span>AI<span class="logo-term">Term</span><span class="logo-bracket">]</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">文章</a></li>
+        <li><a href="../index.html#taskboard">工作看板</a></li><li><a href="../index.html#features">功能</a></li><li><a href="../index.html#install">安裝</a></li>
+        <li><a href="en.html">EN</a></li>
+        <li><a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener" class="nav-github">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <article class="post">
+    <div class="post-inner">
+      <a class="post-back" href="index.html">← 回到文章列表</a>
+      <h1 class="post-title">把任務交給 AI，不用再守著螢幕等它做完</h1>
+      <div class="post-meta">2026-07-16</div>
+      <p class="post-sub">循環工程就是讓這件事變可能的方法。這篇文章會介紹 AITerm LoopStudio 怎麼實作它的——以及為什麼它讓我的開發流程整個不一樣了。</p>
+      <div class="post-body">
+<p>說真的，這個模式你應該不陌生：打一段需求，AI 吐一段程式碼，你說「這裡不對」，AI 改，你再說「繼續」——這樣來來回回個五次、十次，任務才終於做完。全程幾乎沒辦法離開螢幕，因為 AI 每走一步都要你先點頭才行。</p>
+<p>AITerm 的 LoopStudio 想解決的，就是這件事。它背後有個核心概念，叫做「<strong>循環工程</strong>」（Loop Engineering）：<strong>目標只需要講一次——AI 會自己拆解任務、自己執行、自己檢查，直到目標真的做完才停。不需要你一直守在旁邊回覆。</strong></p>
+<figure><img src="images/loop-engineering/01-compare.png" alt="傳統一問一答 vs 循環工程" loading="lazy"></figure>
+<h2>為什麼「一問一答」不夠用</h2>
+<p>一問一答最大的問題，不是「AI 不夠厲害」，而是<strong>人變成了流程裡少不了的環節</strong>。任務越複雜、步驟越多，你就得在旁邊盯越久——確認、修正、再確認，這個角色其實吃掉了大量本來可以拿去做其他事的注意力。</p>
+<p>更麻煩的是，很多任務本來就是<strong>多個階段</strong>串起來的：先寫程式碼、再補測試、再自我審查、再跑一次驗證……每個階段都要人工介入的話，AI 再強也沒辦法展現「自主」的價值，因為推進的節奏始終被你的回覆速度卡住。</p>
+<h2>目標說一次，剩下讓迴圈自己跑</h2>
+<p>LoopStudio 的用法很直接：你設定「目標」和「停止條件」，按下開始，後面的事它自己來。</p>
+<figure><img src="images/loop-engineering/02-architecture.png" alt="LoopStudio 架構圖" loading="lazy"></figure>
+<p>整套系統分成三個角色：</p>
+<p><strong>Orchestrator（總指揮）</strong> 負責拆解目標。它不會自己動手寫程式或跑指令，而是透過一個叫 <code>call_agent</code> 的工具，把子任務一個一個派給合適的子代理——像是「這段交給 Coder」、「這段交給 Tester」。</p>
+<p><strong>子代理（Sub-Agent）</strong> 才是真正動手的角色。每個子代理都有自己的身份設定（AITerm 內建了 Coder、Tester、Reviewer、DevOps、Security Auditor、Architect 等九種角色，可以直接拿來用），接到任務後，會自己呼叫 <code>read_file</code>、<code>write_file</code>、<code>execute_command</code> 這些工具去讀寫檔案、跑指令，一路做到沒有下一步為止，再把結果回報給 Orchestrator。</p>
+<p><strong>Verifier（驗收者）</strong> 是整個循環能夠「自主」跑起來的關鍵。每一輪 Orchestrator 派工結束後，Verifier 會拿著你一開始設的停止條件，去比對目標達成了沒有。如果還沒，它會列出「已經完成什麼」「還差什麼」，這份回饋會被寫進一個持續累積的上下文（<code>sharedContext</code>），下一輪 Orchestrator 就會看著這份回饋繼續補齊。這樣一直跑，直到 Verifier 說「done」，或是達到你設定的最大輪數為止。</p>
+<p>也就是說，<strong>推進迴圈的不是你的下一句話，而是 Verifier 對目標的判斷</strong>。這正是「循環工程」和傳統聊天式開發最根本的差異。</p>
+<h2>自主不等於失控：危險的那一步，決定權還是在你</h2>
+<p>讓 AI 自己跑迴圈、自己執行指令，聽起來蠻讓人捏一把冷汗的——萬一它跑了什麼危險指令，或不小心寫到專案目錄之外怎麼辦？這正是 LoopStudio 有內建「安全閘門」的原因。</p>
+<p>每個子代理要執行指令之前，系統都會先做兩件事：第一，比對指令是不是「危險操作」（像 <code>rm -rf</code>、<code>sudo</code>、強制 <code>git push</code>、格式化磁碟這類）；第二，確認這個指令的寫入目標有沒有真的落在你指定的專案目錄裡——就算是透過 <code>&gt;</code>、<code>tee</code>、<code>cp</code>、<code>sed -i</code> 這種間接寫入，也照樣會被攔下來檢查。遇到無法確認寫入位置的狀況，一律當作「不安全」處理，不會直接放行。</p>
+<p>如果踩到這兩條線，系統有兩種應對：開了「全自動」模式的話就自動放行；沒開的話，它會停下來，跳出一個確認面板，把「這個指令要幹嘛」講清楚，等你點頭才繼續。換句話說，<strong>自主循環幫你擺脫的是「要一直確認瑣碎步驟」這件事——但真的有風險的操作，決定權還是在你這邊</strong>。</p>
+<h2>不會卡死，也不會變黑盒子</h2>
+<p>循環工程也不是「叫它跑就一直跑到天荒地老」。系統會記錄最近三次「哪個代理、做什麼任務」的組合，如果連續三次都一樣（同一個代理、同樣的任務前綴），就會判定這是卡住了的死循環，主動中止，而不是傻傻燒完你設的所有輪數。整個執行過程的每一步——誰被指派了什麼、呼叫了哪些工具、Verifier 給了什麼回饋——都會即時顯示在「執行追蹤」面板裡，讓複雜的自動化流程不會變成一個完全看不透的黑盒子。</p>
+<h2>循環工程帶來的根本轉變</h2>
+<p>循環工程想解決的事情其實很簡單：<strong>把「一直推進任務」這件事，從人的手上還給一個會自我檢查的迴圈。</strong> 你只需要把目標和停止條件說清楚一次，接下來 Orchestrator 拆解、子代理執行、安全閘門把關、Verifier 驗收，一輪接一輪自己跑，直到真的做完為止。</p>
+<p>如果你也常常被「一問一答」拖著跑複雜任務，不妨讓 AI 自己跑一次循環看看——說不定你會發現，很多時候你根本不需要一直守在螢幕前盯著。</p>
+<hr>
+<p><em>如果這篇對你有幫助，歡迎幫我按個拍手（最多可以拍 50 下哦），也歡迎追蹤我，後續還會有更多 AI 輔助開發和自主代理架構的實戰分享。</em></p>
+      </div>
+    </div>
+  </article>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 AITerm · Apache 2.0 · <a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </footer>
+</body>
+</html>
