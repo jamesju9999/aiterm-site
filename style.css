@@ -150,6 +150,11 @@ code {
   margin-bottom: 1.25rem;
 }
 
+/* 較長語系的主標題。3.5rem 是為了中文那句 9 個字設的，英文同一句話有 50
+   多個字元，在那個字級下會斷成四行、還把逗號後的單字孤零零留在一行。
+   縮字級比為了遷就字級去扭曲文案好。 */
+.hero-title--long { font-size: clamp(1.9rem, 3.6vw, 2.6rem); }
+
 .gradient-text {
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
   -webkit-background-clip: text;
