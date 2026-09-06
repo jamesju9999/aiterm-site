@@ -113,3 +113,12 @@
   .post-list { padding-top: 108px; }
   .post-body { font-size: 1.02rem; }
 }
+
+/* 指回 Medium 原文。沒有網址時整個元素不會輸出，不是隱藏起來——
+   不會有指向空白的連結。 */
+.post-medium {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 0.95rem;
+}

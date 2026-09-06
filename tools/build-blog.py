@@ -29,6 +29,9 @@ OUT = SITE / "blog"
 #
 # 刻意寫死而不是從資料夾名推導：網址一旦公開就不該因為某天改了資料夾名稱
 # 就跟著變。新增文章時在這裡加一列。
+#
+# `medium_zh` / `medium_en` 是這篇在 Medium 上的原文網址。留 None 代表
+# 還沒發佈——那時候頁尾就不會出現連結，不會生出一個指向空白的按鈕。
 ARTICLES = [
     {
         "slug": "work-still-needs-organizing",
@@ -36,6 +39,8 @@ ARTICLES = [
         "zh": "AI再厲害，工作還是得有人安排.md",
         "en": "however-good-ai-gets-work-still-needs-organizing.md",
         "date": "2026-09-06",
+        "medium_zh": None,
+        "medium_en": None,
     },
     {
         "slug": "chatgpt-web-bridge",
@@ -43,6 +48,8 @@ ARTICLES = [
         "zh": "chatgpt網頁橋接.md",
         "en": "chatgpt-web-bridge.md",
         "date": "2026-08-13",
+        "medium_zh": None,
+        "medium_en": None,
     },
     {
         "slug": "knowledge-base-rag",
@@ -50,6 +57,8 @@ ARTICLES = [
         "zh": "aiterm-knowledge-base-decisions.md",
         "en": None,          # 這篇只有中文版
         "date": "2026-08-03",
+        "medium_zh": None,
+        "medium_en": None,
     },
     {
         "slug": "loop-engineering",
@@ -57,6 +66,8 @@ ARTICLES = [
         "zh": "loopstudio-循環工程.md",
         "en": "loopstudio-loop-engineering.md",
         "date": "2026-07-16",
+        "medium_zh": None,
+        "medium_en": None,
     },
     {
         "slug": "database-natural-language",
@@ -64,6 +75,8 @@ ARTICLES = [
         "zh": "ai資料庫自然語言查詢.md",
         "en": "ai-database-natural-language.md",
         "date": "2026-07-15",
+        "medium_zh": None,
+        "medium_en": None,
     },
 ]
 
@@ -77,6 +90,7 @@ T = {
         "home": "首頁",
         "other": ("EN", "en.html"),
         "read": "閱讀全文 →",
+        "medium": "在 Medium 上閱讀原文 →",
         "only_zh": "（本篇僅有中文版）",
         "site_title": "AITerm 文章",
         "nav": [("工作看板", "../index.html#taskboard"), ("功能", "../index.html#features"),
@@ -91,6 +105,7 @@ T = {
         "home": "Home",
         "other": ("中文", "index.html"),
         "read": "Read →",
+        "medium": "Read the original on Medium →",
         "only_zh": "",
         "site_title": "AITerm Blog",
         "nav": [("Task Board", "../en.html#taskboard"), ("Features", "../en.html#features"),
@@ -311,6 +326,11 @@ def main() -> int:
                 f"images/{art['slug']}/",
             )
             fname = f"{art['slug']}.html" if lang == "zh" else f"{art['slug']}-en.html"
+            mu = art.get(f"medium_{lang}")
+            medium = (
+                f'      <p class="post-medium"><a href="{mu}" target="_blank" '
+                f'rel="noopener">{T[lang]["medium"]}</a></p>'
+            ) if mu else ""
             article = f"""  <article class="post">
     <div class="post-inner">
       <a class="post-back" href="{'index.html' if lang == 'zh' else 'en.html'}">{T[lang]['back']}</a>
@@ -320,6 +340,7 @@ def main() -> int:
       <div class="post-body">
 {body}
       </div>
+{medium}
     </div>
   </article>
 """
