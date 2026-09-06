@@ -58,6 +58,7 @@
         <span class="logo-bracket">[</span>AI<span class="logo-term">Term</span><span class="logo-bracket">]</span>
       </a>
       <ul class="nav-links">
+        <li><a href="#taskboard">工作看板</a></li>
         <li><a href="#features">功能</a></li>
         <li><a href="#architecture">架構</a></li>
         <li><a href="#install">安裝</a></li>
@@ -81,6 +82,7 @@
       </h1>
       <p class="hero-sub">
         AITerm 是跨平台 AI 智慧終端機。除了接雲端模型，<strong>更能串接本地端模型，省下 token 費用、資料不外送</strong>；或用 Claude Code CLI 橋接任何你想接的模型。<br />
+        更重要的是，它把 AI 的產出當成<strong>工作</strong>來管：<strong>工作看板</strong>讓你把事情排進佇列，AITerm 自動派給 Claude Code 執行、追蹤結果、整理成報告。<br />
         自主代理循環、多資料庫連線、知識庫與 MCP 工具全都內建，基於 <strong>Tauri 2</strong>、<strong>React 19</strong> 與 <strong>Rust</strong> 打造。
       </p>
       <div class="hero-actions">
@@ -134,6 +136,99 @@
     </div>
   </section>
 
+  <!-- TASK BOARD — 主張 -->
+  <section id="taskboard" class="section taskboard">
+    <div class="container">
+      <div class="tb-lead">
+        <div class="tb-eyebrow">工作管理與分派</div>
+        <h2 class="tb-title">AI 再強，<span class="gradient-text">還是得有人排工</span></h2>
+        <p class="tb-claim">
+          模型已經能寫程式、跑指令、多步驟完成整件任務。但你仍然一次只盯得住一件事：
+          下指令、等它跑完、看結果、再下一件。<br />
+          <strong>瓶頸早就不在模型能不能做，而在你一次能盯幾件。</strong>
+        </p>
+      </div>
+
+      <div class="tb-args">
+        <div class="tb-arg">
+          <div class="tb-arg-num">01</div>
+          <h3>算力變便宜了，你的注意力沒有</h3>
+          <p>同時跑十個 AI 任務在技術上毫無問題，難的是你記不住哪件在跑、哪件跑完了、哪件失敗要重來。缺的不是更強的模型，是一個放得下這些事的地方。</p>
+        </div>
+        <div class="tb-arg">
+          <div class="tb-arg-num">02</div>
+          <h3>需求寫清楚，比催 AI 更有效</h3>
+          <p>同一件事講得清楚與講得含糊，結果天差地遠。與其反覆修正，不如一開始就把目標、範圍、限制與驗收標準寫下來——這也是一份工作能被交出去的前提。</p>
+        </div>
+        <div class="tb-arg">
+          <div class="tb-arg-num">03</div>
+          <h3>做完的事要留下記錄</h3>
+          <p>跑完就消失的自動化沒有累積。哪件做了、怎麼做的、結果如何，要能回頭查、能整理成報告交出去，那才算是工作，不只是一次執行。</p>
+        </div>
+      </div>
+
+      <div class="tb-show">
+        <div class="tb-show-text">
+          <h3>把工作排進去，AITerm 自動派給 Claude Code</h3>
+          <p>
+            把想做的事寫成卡片：標題、要在哪個資料夾做、詳細指示，需要的話附上檔案。
+            拖到「待執行」，AITerm 就會開一個分頁、啟動 Claude Code、把指示送過去，
+            做完自動搬到「已完成」並標上成功或失敗。
+          </p>
+          <p>
+            一次排好幾件，晚上再看結果——不必守在電腦前一件一件下指令。
+            同時執行幾件由你決定，不會一次全部塞出去。
+          </p>
+          <ul class="tb-points">
+            <li><strong>互動模式</strong>：需要邊做邊討論的工作，不佔並行額度，也不會被判定卡住</li>
+            <li><strong>專案</strong>：卡片歸屬於專案，專案是磁碟上自成一體的資料夾，複製即可搬移或分享</li>
+            <li><strong>搜尋</strong>：依標題、內容或工作目錄即時過濾四個欄位</li>
+          </ul>
+        </div>
+
+        <div class="tb-board" aria-hidden="true">
+          <div class="tb-col">
+            <div class="tb-col-head"><span>計畫中</span><span class="tb-col-n">2</span></div>
+            <div class="tb-card"><div class="tb-card-t">整理打卡 API 規格</div><div class="tb-card-p">~/Downloads/HCP</div></div>
+            <div class="tb-card"><div class="tb-card-t">補上單元測試</div><div class="tb-card-p">~/repo/aiterm</div></div>
+          </div>
+          <div class="tb-col">
+            <div class="tb-col-head tb-queued"><span>待執行</span><span class="tb-col-n">1</span></div>
+            <div class="tb-card"><div class="tb-card-t">修 CI 編譯錯誤</div><div class="tb-card-p">~/repo/aiterm</div></div>
+          </div>
+          <div class="tb-col">
+            <div class="tb-col-head tb-running"><span>執行中</span><span class="tb-col-n">1</span></div>
+            <div class="tb-card tb-card--running">
+              <div class="tb-card-t">重構登入流程</div>
+              <div class="tb-card-p">~/repo/ares</div>
+              <div class="tb-badges"><span class="tb-badge tb-badge--run"><i></i>執行中</span></div>
+            </div>
+          </div>
+          <div class="tb-col">
+            <div class="tb-col-head tb-done"><span>已完成</span><span class="tb-col-n">2</span></div>
+            <div class="tb-card"><div class="tb-card-t">產生 OpenAPI 文件</div><div class="tb-card-p">~/Downloads/HCP</div><div class="tb-badges"><span class="tb-badge tb-badge--ok">成功</span></div></div>
+            <div class="tb-card"><div class="tb-card-t">清掉沒用到的相依</div><div class="tb-card-p">~/repo/aiterm</div><div class="tb-badges"><span class="tb-badge tb-badge--ok">成功</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-extras">
+        <div class="tb-extra">
+          <h4>AI 工作報告</h4>
+          <p>把一個專案的看板整理成一份文件——AI 讀過每一張卡片（含已完成工作的完整對話記錄），產出排版好的報告存進專案累積成歷史。已完成的摘要只整理一次就快取起來，第二次產報告只處理新的部分。</p>
+        </div>
+        <div class="tb-extra">
+          <h4>AI 潤飾需求</h4>
+          <p>工作內容隨手打幾句，按下潤飾，AI 會改寫成一份能直接執行的指示：目標、範圍、限制、驗收標準，而且不會自己加上你沒要求的工作。不滿意一鍵還原。</p>
+        </div>
+        <div class="tb-extra">
+          <h4>封存</h4>
+          <p>做完的事不會無止境堆積。單張或整欄一次收起，看板只留下正在進行的。封存不是刪除——卡片、對話記錄、附件全部留著，可搜尋、可翻閱、可放回看板。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FEATURES -->
   <section id="features" class="section features">
     <div class="container">
@@ -165,6 +260,11 @@
           <div class="feature-icon">&#128257;</div>
           <h3>LoopStudio 循環工程</h3>
           <p>「循環工程」讓 AI 自主拆解、執行任務，不必一問一答反覆確認——主控代理持續分派子代理執行，直到目標完成才停止，安全閘門與即時執行追蹤全程把關。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128203;</div>
+          <h3>工作看板・自動派工</h3>
+          <p>把工作寫成卡片排進佇列，AITerm 自動開分頁、啟動 Claude Code、送出指示，完成後標記成功或失敗。含專案、互動模式、對話記錄、AI 工作報告與封存。<a href="#taskboard">看詳細 &#8594;</a></p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">&#128187;</div>

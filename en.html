@@ -58,6 +58,7 @@
         <span class="logo-bracket">[</span>AI<span class="logo-term">Term</span><span class="logo-bracket">]</span>
       </a>
       <ul class="nav-links">
+        <li><a href="#taskboard">Task Board</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#architecture">Architecture</a></li>
         <li><a href="#install">Install</a></li>
@@ -81,6 +82,7 @@
       </h1>
       <p class="hero-sub">
         AITerm is a cross-platform AI-powered terminal. Beyond cloud models, <strong>it runs local models to save on token costs and keep your data on-box</strong> — or bridges the Claude Code CLI to any provider you want.<br />
+        More than that, it treats what the AI produces as <strong>work</strong>: a <strong>task board</strong> lets you queue jobs, and AITerm dispatches them to Claude Code, tracks the outcome, and writes them up as a report.<br />
         Autonomous agent loops, multi-database connections, a knowledge base, and MCP tools are all built in, on <strong>Tauri 2</strong>, <strong>React 19</strong>, and <strong>Rust</strong>.
       </p>
       <div class="hero-actions">
@@ -134,6 +136,99 @@
     </div>
   </section>
 
+  <!-- TASK BOARD — the pitch -->
+  <section id="taskboard" class="section taskboard">
+    <div class="container">
+      <div class="tb-lead">
+        <div class="tb-eyebrow">Work management &amp; dispatch</div>
+        <h2 class="tb-title">However good the AI gets, <span class="gradient-text">someone still has to queue the work</span></h2>
+        <p class="tb-claim">
+          Models can already write code, run commands, and carry a multi-step task to the end. You, meanwhile,
+          still watch one thing at a time: give the instruction, wait, read the result, start the next.<br />
+          <strong>The bottleneck stopped being what the AI can do. It is how many things you can personally supervise.</strong>
+        </p>
+      </div>
+
+      <div class="tb-args">
+        <div class="tb-arg">
+          <div class="tb-arg-num">01</div>
+          <h3>Compute got cheap. Your attention did not</h3>
+          <p>Running ten AI tasks at once is technically trivial. What is hard is remembering which one is running, which finished, and which failed and needs another go. The missing piece is not a better model — it is somewhere to put all of that.</p>
+        </div>
+        <div class="tb-arg">
+          <div class="tb-arg-num">02</div>
+          <h3>A clear brief beats nagging the AI</h3>
+          <p>The same task, stated precisely or vaguely, produces wildly different results. Rather than correcting after the fact, write down the goal, the scope, the constraints and what "done" means up front — which is also what makes a piece of work handed-off-able at all.</p>
+        </div>
+        <div class="tb-arg">
+          <div class="tb-arg-num">03</div>
+          <h3>Finished work should leave a record</h3>
+          <p>Automation that evaporates when it finishes accumulates nothing. What was done, how, and how it turned out has to be reviewable afterwards and presentable as a report. That is what makes it work rather than just an execution.</p>
+        </div>
+      </div>
+
+      <div class="tb-show">
+        <div class="tb-show-text">
+          <h3>Queue the work; AITerm hands it to Claude Code</h3>
+          <p>
+            Write what you want done as a card: a title, which folder to work in, detailed instructions,
+            attachments if you need them. Drag it to Queued and AITerm opens a tab, launches Claude Code,
+            delivers the instructions, and moves the card to Done with a success or failure outcome.
+          </p>
+          <p>
+            Line up an evening's work and read the results later, instead of driving each task by hand.
+            How many run at once is yours to set — nothing gets fired off all at once.
+          </p>
+          <ul class="tb-points">
+            <li><strong>Interactive mode</strong> — for work you intend to discuss yourself, exempt from the concurrency cap and from stall detection</li>
+            <li><strong>Projects</strong> — cards live in projects, and a project is a self-contained folder on disk you can copy to move or share</li>
+            <li><strong>Search</strong> — filter all four columns by title, body or working folder as you type</li>
+          </ul>
+        </div>
+
+        <div class="tb-board" aria-hidden="true">
+          <div class="tb-col">
+            <div class="tb-col-head"><span>Planning</span><span class="tb-col-n">2</span></div>
+            <div class="tb-card"><div class="tb-card-t">Punch-in API spec</div><div class="tb-card-p">~/Downloads/HCP</div></div>
+            <div class="tb-card"><div class="tb-card-t">Backfill unit tests</div><div class="tb-card-p">~/repo/aiterm</div></div>
+          </div>
+          <div class="tb-col">
+            <div class="tb-col-head tb-queued"><span>Queued</span><span class="tb-col-n">1</span></div>
+            <div class="tb-card"><div class="tb-card-t">Fix the CI build</div><div class="tb-card-p">~/repo/aiterm</div></div>
+          </div>
+          <div class="tb-col">
+            <div class="tb-col-head tb-running"><span>Running</span><span class="tb-col-n">1</span></div>
+            <div class="tb-card tb-card--running">
+              <div class="tb-card-t">Refactor login</div>
+              <div class="tb-card-p">~/repo/ares</div>
+              <div class="tb-badges"><span class="tb-badge tb-badge--run"><i></i>Running</span></div>
+            </div>
+          </div>
+          <div class="tb-col">
+            <div class="tb-col-head tb-done"><span>Done</span><span class="tb-col-n">2</span></div>
+            <div class="tb-card"><div class="tb-card-t">OpenAPI docs</div><div class="tb-card-p">~/Downloads/HCP</div><div class="tb-badges"><span class="tb-badge tb-badge--ok">Success</span></div></div>
+            <div class="tb-card"><div class="tb-card-t">Drop dead deps</div><div class="tb-card-p">~/repo/aiterm</div><div class="tb-badges"><span class="tb-badge tb-badge--ok">Success</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-extras">
+        <div class="tb-extra">
+          <h4>AI work report</h4>
+          <p>Turn a project's board into a document. The AI reads every card — including the full transcripts of finished work — and writes a formatted report saved into the project folder as history. A finished card's summary is written once and cached, so the next report only processes what is new.</p>
+        </div>
+        <div class="tb-extra">
+          <h4>AI-refined briefs</h4>
+          <p>Jot a rough note into a task, press Refine, and the AI rewrites it into something executable: goal, scope, constraints, acceptance criteria — without inventing work you never asked for. One click restores your original.</p>
+        </div>
+        <div class="tb-extra">
+          <h4>Archive</h4>
+          <p>Finished work does not pile up forever. Archive one card or a whole column and the board keeps only what is in flight. Archiving is not deleting — cards, transcripts and attachments stay put, searchable, pageable, and restorable to the board.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FEATURES -->
   <section id="features" class="section features">
     <div class="container">
@@ -165,6 +260,11 @@
           <div class="feature-icon">&#128257;</div>
           <h3>LoopStudio Loop Engineering</h3>
           <p>"Loop engineering" lets the AI break down and execute tasks on its own — no back-and-forth confirmation needed. An orchestrator keeps dispatching sub-agents until the goal is complete, with safety gates and a live execution trace watching every step.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128203;</div>
+          <h3>Task Board &amp; auto-dispatch</h3>
+          <p>Queue work as cards and AITerm opens a tab, launches Claude Code, delivers the instructions, and marks the outcome. Includes projects, interactive mode, transcripts, AI work reports, and an archive. <a href="#taskboard">See more &#8594;</a></p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">&#128187;</div>
