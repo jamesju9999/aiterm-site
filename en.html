@@ -112,26 +112,55 @@
       </div>
     </div>
 
-    <!-- Terminal mockup -->
-    <div class="hero-terminal-wrap">
-      <div class="terminal-window">
+    <!-- Task board → auto-dispatch -->
+    <div class="hero-stack">
+      <div class="hero-win">
         <div class="terminal-header">
           <span class="dot dot-red"></span>
           <span class="dot dot-yellow"></span>
           <span class="dot dot-green"></span>
-          <span class="terminal-title">AITerm — bash</span>
+          <span class="terminal-title">AITerm — Task Board</span>
+        </div>
+        <div class="hero-mini-board">
+          <div class="hero-col">
+            <div class="hero-colhead"><span>PLANNING</span><b>2</b></div>
+            <div class="hero-card"><div class="t">Punch-in API spec</div></div>
+            <div class="hero-card"><div class="t">Backfill unit tests</div></div>
+          </div>
+          <div class="hero-col">
+            <div class="hero-colhead q"><span>QUEUED</span><b>1</b></div>
+            <div class="hero-card"><div class="t">Fix the CI build</div></div>
+          </div>
+          <div class="hero-col">
+            <div class="hero-colhead r"><span>RUNNING</span><b>1</b></div>
+            <div class="hero-card run"><div class="t">Refactor login</div><span class="b rn">Running</span></div>
+          </div>
+          <div class="hero-col">
+            <div class="hero-colhead d"><span>DONE</span><b>2</b></div>
+            <div class="hero-card"><div class="t">OpenAPI docs</div><span class="b ok">Success</span></div>
+            <div class="hero-card"><div class="t">Drop dead deps</div><span class="b ok">Success</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-link">
+        <div class="hero-link-line"></div>
+        <div class="hero-link-text">Drag to Queued and AITerm takes over<br><span>opens a tab → launches Claude Code → delivers the brief → marks the outcome</span></div>
+      </div>
+
+      <div class="hero-win terminal-window">
+        <div class="terminal-header">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+          <span class="terminal-title">AITerm — Agent: Refactor login</span>
         </div>
         <div class="terminal-body">
-          <div class="terminal-line"><span class="prompt">~</span> <span class="cmd">/ai find the top 5 processes by CPU usage</span></div>
-          <div class="terminal-line output ai-thinking">&#9654; Thinking...</div>
-          <div class="terminal-line output ai-cmd">ps aux --sort=-%cpu | head -6</div>
-          <div class="terminal-line output ai-explain">Risk: Low ・ Lists the 5 processes with the highest CPU usage</div>
-          <div class="terminal-line output">[Run] &#9654;</div>
-          <div class="terminal-line output muted">USER       PID  %CPU  %MEM  COMMAND</div>
-          <div class="terminal-line output muted">jameschu  1234  45.2   2.1  node</div>
-          <div class="terminal-line output muted">jameschu  5678  12.4   1.8  cargo</div>
-          <div class="terminal-line output muted">...</div>
-          <div class="terminal-line"><span class="prompt">~</span> <span class="cursor">█</span></div>
+          <div class="terminal-line"><span class="prompt">~</span> <span class="cmd">claude</span></div>
+          <div class="terminal-line output ai-thinking">&#9654; Reading src/auth/login.ts…</div>
+          <div class="terminal-line output ai-cmd">Refactor login: extract session validation</div>
+          <div class="terminal-line output muted">✓ 3 files changed · tests 12/12 passing</div>
+          <div class="terminal-line output ai-explain">Card moved to Done · marked success</div>
         </div>
       </div>
     </div>

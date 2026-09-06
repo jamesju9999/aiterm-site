@@ -302,6 +302,54 @@ code {
 
 @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 
+
+/* ── 首頁右側：上看板、下終端機 ──
+   標題主張「工作要被安排」，視覺就得畫出那件事：卡片排進看板，系統自動
+   開一個分頁把它跑完。中間那道箭頭是兩段之間的因果，不是裝飾。 */
+/* min-width:0 是防禦性的：grid/flex 子項的預設 min-width 是 auto，也就是
+   「不肯縮到比內容窄」。這個看板裡的卡片標題是不換行的長字串，少了這行
+   在夠窄的容器裡就會把版面撐爆。（實測 375px 沒問題，這是預留。） */
+.hero-stack { min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 0; width: 100%; max-width: 560px; }
+
+.hero-win {
+  min-width: 0;
+  width: 100%;
+  background: #0d1117;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow), 0 0 60px rgba(74, 222, 128, 0.05);
+}
+
+/* minmax(0, 1fr) 而不是 1fr：`1fr` 展開後是 `minmax(auto, 1fr)`，那個 auto
+   最小值套在**軌道**上，子項再怎麼加 min-width:0 都蓋不掉它。同樣是預留。 */
+.hero-mini-board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 9px; }
+.hero-col { min-width: 0; background: #161b22; border-radius: 6px; padding: 6px; display: flex; flex-direction: column; gap: 5px; min-height: 104px; }
+.hero-colhead {
+  min-width: 0;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 5px 6px; border-top: 2px solid #55637a; border-radius: 4px 4px 0 0;
+  background: rgba(85, 99, 122, 0.14);
+  font-size: 8.5px; font-weight: 700; letter-spacing: 0.04em; color: #8b949e;
+}
+.hero-colhead.q { border-top-color: #8a6d1f; background: rgba(138, 109, 31, 0.14); }
+.hero-colhead.r { border-top-color: #38bdf8; background: rgba(56, 189, 248, 0.14); }
+.hero-colhead.d { border-top-color: #2f7d52; background: rgba(47, 125, 82, 0.14); }
+.hero-colhead b { background: #21262d; color: #c9d1d9; border-radius: 999px; padding: 0 5px; font-weight: 600; }
+
+.hero-card { background: #21262d; border: 1px solid #30363d; border-radius: 5px; padding: 6px 7px; }
+.hero-card.run { border-color: rgba(56, 189, 248, 0.5); }
+.hero-card .t { font-size: 9.5px; font-weight: 600; color: #f0f6fc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hero-card .b { display: inline-block; margin-top: 4px; font-size: 8px; font-weight: 600; padding: 1px 6px; border-radius: 999px; }
+.hero-card .b.ok { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+.hero-card .b.rn { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+
+/* 兩段之間的因果。虛線是「自動」的視覺說法——中間沒有人動手。 */
+.hero-link { display: flex; flex-direction: column; align-items: center; padding: 10px 0 8px; }
+.hero-link-line { width: 1px; height: 16px; background: repeating-linear-gradient(180deg, var(--accent) 0 4px, transparent 4px 8px); }
+.hero-link-text { margin-top: 6px; font-size: 11.5px; color: var(--accent); font-weight: 600; text-align: center; }
+.hero-link-text span { color: var(--muted); font-weight: 400; }
+
 /* ── SECTIONS ── */
 .section {
   padding: 96px 0;
@@ -829,7 +877,7 @@ code {
   .hero-sub { max-width: 100%; }
   .hero-actions { justify-content: center; }
   .hero-platforms { justify-content: center; }
-  .hero-terminal-wrap { order: -1; }
+  .hero-terminal-wrap, .hero-stack { order: -1; }
 
   .arch-diagram { flex-direction: column; }
   .arch-arrow svg { transform: rotate(90deg); }

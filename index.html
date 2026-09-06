@@ -112,26 +112,55 @@
       </div>
     </div>
 
-    <!-- Terminal mockup -->
-    <div class="hero-terminal-wrap">
-      <div class="terminal-window">
+    <!-- Task board → auto-dispatch -->
+    <div class="hero-stack">
+      <div class="hero-win">
         <div class="terminal-header">
           <span class="dot dot-red"></span>
           <span class="dot dot-yellow"></span>
           <span class="dot dot-green"></span>
-          <span class="terminal-title">AITerm — bash</span>
+          <span class="terminal-title">AITerm — 工作看板</span>
+        </div>
+        <div class="hero-mini-board">
+          <div class="hero-col">
+            <div class="hero-colhead"><span>計畫中</span><b>2</b></div>
+            <div class="hero-card"><div class="t">整理打卡 API 規格</div></div>
+            <div class="hero-card"><div class="t">補上單元測試</div></div>
+          </div>
+          <div class="hero-col">
+            <div class="hero-colhead q"><span>待執行</span><b>1</b></div>
+            <div class="hero-card"><div class="t">修 CI 編譯錯誤</div></div>
+          </div>
+          <div class="hero-col">
+            <div class="hero-colhead r"><span>執行中</span><b>1</b></div>
+            <div class="hero-card run"><div class="t">重構登入流程</div><span class="b rn">執行中</span></div>
+          </div>
+          <div class="hero-col">
+            <div class="hero-colhead d"><span>已完成</span><b>2</b></div>
+            <div class="hero-card"><div class="t">產生 OpenAPI 文件</div><span class="b ok">成功</span></div>
+            <div class="hero-card"><div class="t">清掉沒用到的相依</div><span class="b ok">成功</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-link">
+        <div class="hero-link-line"></div>
+        <div class="hero-link-text">拖到「待執行」，AITerm 自動接手<br><span>開分頁 → 啟動 Claude Code → 送出指示 → 標記結果</span></div>
+      </div>
+
+      <div class="hero-win terminal-window">
+        <div class="terminal-header">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+          <span class="terminal-title">AITerm — Agent: 重構登入流程</span>
         </div>
         <div class="terminal-body">
-          <div class="terminal-line"><span class="prompt">~</span> <span class="cmd">/ai 幫我找出 CPU 佔用最高的前 5 個 process</span></div>
-          <div class="terminal-line output ai-thinking">&#9654; 思考中...</div>
-          <div class="terminal-line output ai-cmd">ps aux --sort=-%cpu | head -6</div>
-          <div class="terminal-line output ai-explain">風險：低 ・ 列出 CPU 使用率最高的 5 個 process</div>
-          <div class="terminal-line output">[執行] &#9654;</div>
-          <div class="terminal-line output muted">USER       PID  %CPU  %MEM  COMMAND</div>
-          <div class="terminal-line output muted">jameschu  1234  45.2   2.1  node</div>
-          <div class="terminal-line output muted">jameschu  5678  12.4   1.8  cargo</div>
-          <div class="terminal-line output muted">...</div>
-          <div class="terminal-line"><span class="prompt">~</span> <span class="cursor">█</span></div>
+          <div class="terminal-line"><span class="prompt">~</span> <span class="cmd">claude</span></div>
+          <div class="terminal-line output ai-thinking">&#9654; 讀取 src/auth/login.ts…</div>
+          <div class="terminal-line output ai-cmd">重構登入流程：抽出 session 驗證</div>
+          <div class="terminal-line output muted">✓ 修改 3 個檔案・測試 12/12 通過</div>
+          <div class="terminal-line output ai-explain">卡片已自動移到「已完成」・標記成功</div>
         </div>
       </div>
     </div>
