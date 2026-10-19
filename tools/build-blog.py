@@ -261,7 +261,8 @@ def _latin(buf: list[str]) -> bool:
 
 # ── 版型 ───────────────────────────────────────────────────────────────────
 
-def page(lang: str, title: str, desc: str, body: str, canonical: str) -> str:
+def page(lang: str, title: str, desc: str, body: str, canonical: str,
+         image: str = "https://aiterm.win/og-image.png") -> str:
     t = T[lang]
     nav = "".join(f'<li><a href="{u}">{n}</a></li>' for n, u in t["nav"])
     other_label, other_href = t["other"]
@@ -277,7 +278,9 @@ def page(lang: str, title: str, desc: str, body: str, canonical: str) -> str:
   <meta property="og:title" content="{html.escape(title)}" />
   <meta property="og:description" content="{html.escape(desc)}" />
   <meta property="og:url" content="https://aiterm.win/blog/{canonical}" />
-  <meta property="og:image" content="https://aiterm.win/og-image.png" />
+  <meta property="og:image" content="{image}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="{image}" />
   <link rel="icon" href="../icon.png" />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="blog.css" />
@@ -335,6 +338,10 @@ def main() -> int:
                 f"images/{art['slug']}/",
             )
             fname = f"{art['slug']}.html" if lang == "zh" else f"{art['slug']}-en.html"
+            # 原稿資料夾有 00-cover(-en).png 就拿來當分享預覽圖，沒有就用網站預設的。
+            cover_name = "00-cover.png" if lang == "zh" else "00-cover-en.png"
+            cover = ([f"https://aiterm.win/blog/images/{art['slug']}/{cover_name}"]
+                     if (img_dir / cover_name).is_file() else [])
             mu = art.get(f"medium_{lang}")
             medium = (
                 f'      <p class="post-medium"><a href="{mu}" target="_blank" '
@@ -354,7 +361,7 @@ def main() -> int:
   </article>
 """
             (OUT / fname).write_text(
-                page(lang, f"{title} — AITerm", subtitle or title, article, fname),
+                page(lang, f"{title} — AITerm", subtitle or title, article, fname, *cover),
                 encoding="utf-8",
             )
             urls.append(f"blog/{fname}")
