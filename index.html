@@ -59,6 +59,7 @@
       </a>
       <ul class="nav-links">
         <li><a href="#taskboard">工作看板</a></li>
+        <li><a href="#agents">Agent 協作</a></li>
         <li><a href="blog/index.html">文章</a></li>
         <li><a href="#features">功能</a></li>
         <li><a href="#architecture">架構</a></li>
@@ -83,7 +84,7 @@
       </h1>
       <p class="hero-sub">
         AITerm 是跨平台 AI 智慧終端機。除了接雲端模型，<strong>更能串接本地端模型，省下 token 費用、資料不外送</strong>；或用 Claude Code CLI 橋接任何你想接的模型。<br />
-        更重要的是，它把 AI 的產出當成<strong>工作</strong>來管：<strong>工作看板</strong>讓你把事情排進佇列，AITerm 自動派給 Claude Code 執行、追蹤結果、整理成報告。<br />
+        更重要的是，它把 AI 的產出當成<strong>工作</strong>來管：<strong>工作看板</strong>讓你把事情排進佇列，AITerm 自動派給 Claude Code 執行、追蹤結果、整理成報告；<strong>Agent 協作</strong>更進一步，讓好幾個 AI 工程師分工、互相審查、合併並實際驗收。<br />
         自主代理循環、多資料庫連線、知識庫與 MCP 工具全都內建，基於 <strong>Tauri 2</strong>、<strong>React 19</strong> 與 <strong>Rust</strong> 打造。
       </p>
       <div class="hero-actions">
@@ -259,6 +260,68 @@
     </div>
   </section>
 
+  <!-- AGENT 協作 -->
+  <section id="agents" class="section agentcollab">
+    <div class="container">
+      <div class="tb-lead">
+        <div class="tb-eyebrow">多 Agent 分工</div>
+        <h2 class="tb-title">一個需求，<span class="gradient-text">一整個 AI 團隊接手</span></h2>
+        <p class="tb-claim">
+          一個 Claude Code session 很強，但它是一個人在做事；寫完、審查、合併、驗收，交接全卡在你身上。<br />
+          <strong>Agent 協作把 AI 編成團隊：工程師平行開發，審核者逐模組把關，協調者合併，驗收者實際跑起來確認。</strong>
+        </p>
+      </div>
+
+      <div class="ac-roles">
+        <div class="ac-role" style="--c:#93c5fd">
+          <div class="ac-role-who">可放好幾位</div>
+          <h3>工程師</h3>
+          <p>把模組拖到工程師身上就開工。每位工程師有自己的 git worktree 與分支，真正平行、互不干擾。可選 Claude Code 或 Codex。</p>
+        </div>
+        <div class="ac-role" style="--c:#fde68a">
+          <div class="ac-role-who">每個模組</div>
+          <h3>審核者</h3>
+          <p>只讀 diff、不改檔，判定通過或退回。不通過就附上理由退回原工程師修正，最多 2 輪；通過時寫下這個模組「提供了什麼」。</p>
+        </div>
+        <div class="ac-role" style="--c:#86efac">
+          <div class="ac-role-who">全部通過後</div>
+          <h3>協調者</h3>
+          <p>把各工程師的分支合併成整合版，並確認每個人的最新成果都真的合進來了。</p>
+        </div>
+        <div class="ac-role" style="--c:#5eead4">
+          <div class="ac-role-who">選用</div>
+          <h3>驗收者</h3>
+          <p>在合併版上實際建置、執行、操作——網頁就開瀏覽器點擊截圖——照驗收條件逐條確認。通過才更新你的程式庫。</p>
+        </div>
+      </div>
+
+      <figure class="ac-shot">
+        <img src="blog/images/agent-collaboration/s06-reviewing.png" width="2400" height="1500" decoding="async"
+             alt="Agent 協作桌布：兩位工程師、審核者、協調者、驗收者，審核者正在審查一個模組" />
+        <figcaption>實際畫面：審核者正在審「記帳畫面」，滑鼠移到已通過的模組上，看得到審核者寫的交件摘要。這一輪從開工到驗收通過共 3 分 17 秒。</figcaption>
+      </figure>
+
+      <div class="tb-extras">
+        <div class="tb-extra">
+          <h4>每位 Agent 都有專案全貌</h4>
+          <p>專案簡介寫一次（可用 AI 潤飾），每張卡開工前都會讀到；再自動附上團隊分工：誰負責什麼、進度、相依，以及已完成模組的交件摘要。</p>
+        </div>
+        <div class="tb-extra">
+          <h4>需要你時才找你</h4>
+          <p>Agent 需要做決定時，會把問題送到「待決策」，並發桌面通知與 Telegram；在 App 點選項或在 Telegram 按按鈕回答，Agent 接著做。</p>
+        </div>
+        <div class="tb-extra">
+          <h4>不怕中斷</h4>
+          <p>可以一起開工的卡片同時派出；額度用完自動等待、換帳號後續跑；App 重開後接回原本的對話。可設專案 token 上限，還有團隊範本與新手導覽。</p>
+        </div>
+      </div>
+
+      <div class="ac-more">
+        <a href="blog/agent-collaboration.html" class="btn btn-outline">看完整實作過程：AI 工程師也需要一個團隊 &#8594;</a>
+      </div>
+    </div>
+  </section>
+
   <!-- FEATURES -->
   <section id="features" class="section features">
     <div class="container">
@@ -295,6 +358,31 @@
           <div class="feature-icon">&#128203;</div>
           <h3>工作看板・自動派工</h3>
           <p>把工作寫成卡片排進佇列，AITerm 自動開分頁、啟動 Claude Code、送出指示，完成後標記成功或失敗。含專案、互動模式、對話記錄、AI 工作報告與封存。<a href="#taskboard">看詳細 &#8594;</a></p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#129309;</div>
+          <h3>Agent 協作</h3>
+          <p>把好幾個 Claude Code／Codex 編成團隊：工程師平行開發、審核者逐模組把關、協調者合併、驗收者實際操作確認，交接全自動。<a href="#agents">看詳細 &#8594;</a></p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128161;</div>
+          <h3>下一步建議側欄</h3>
+          <p>在終端機跑 Claude Code、Codex、Gemini CLI 時，側欄依目前畫面提出下一步可以問的提示詞，單擊填入、雙擊送出。可設大目標與里程碑，送出前自動遮罩金鑰與密碼。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128433;</div>
+          <h3>電腦操作入口</h3>
+          <p>全域快捷鍵隨時喚出、托盤常駐背景執行。開啟「電腦操作」後，AI 能看見並操作其他應用程式（截圖、點擊、打字），每個應用程式第一次操作都會先問你。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128268;</div>
+          <h3>OpenAI 相容 API 伺服器</h3>
+          <p>讓 Cursor、Cline、Open WebUI 或你的腳本直接連到 AITerm，使用你在 AITerm 設定好的任何供應商（訂閱、API 金鑰、本機模型），模型名稱照別名表轉送。</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128421;</div>
+          <h3>系統整合</h3>
+          <p>macOS 與 Linux 可設為系統的終端機；macOS Finder 與 Windows 檔案總管右鍵「在 AITerm 開啟」；Windows 需要系統管理員權限的指令可直接在同一分頁提權執行。</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">&#128187;</div>

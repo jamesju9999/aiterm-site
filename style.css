@@ -575,6 +575,44 @@ code {
   .tb-board { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* ── AGENT 協作 ── */
+.agentcollab { background: var(--bg); }
+.ac-roles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 3rem;
+}
+.ac-role {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--c, var(--accent));
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.ac-role-who { font-size: 0.78rem; font-weight: 700; color: var(--c, var(--accent)); margin-bottom: 6px; }
+.ac-role h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+.ac-role p { color: var(--muted); font-size: 0.92rem; }
+.ac-shot { margin: 0 0 3rem; }
+.ac-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+.ac-shot figcaption { color: var(--muted); font-size: 0.88rem; text-align: center; margin-top: 12px; }
+.ac-more { text-align: center; margin-top: 2.5rem; }
+/* 按鈕文字較長，窄螢幕要能換行，不然會把整頁撐出橫向捲動。 */
+.ac-more .btn { white-space: normal; max-width: 100%; justify-content: center; text-align: center; }
+@media (max-width: 900px) {
+  .ac-roles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .ac-roles { grid-template-columns: 1fr; }
+}
+
 /* ── FEATURES ── */
 .features { background: var(--bg); }
 
@@ -708,6 +746,7 @@ code {
 
 .install-tabs {
   display: flex;
+  flex-wrap: wrap; /* 五個分頁在手機寬度排不下，不換行會撐出整頁橫向捲動。 */
   gap: 0.5rem;
   margin-bottom: 1.75rem;
   border-bottom: 1px solid var(--border);

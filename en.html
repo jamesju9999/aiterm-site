@@ -59,6 +59,7 @@
       </a>
       <ul class="nav-links">
         <li><a href="#taskboard">Task Board</a></li>
+        <li><a href="#agents">Agents</a></li>
         <li><a href="blog/en.html">Blog</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#architecture">Architecture</a></li>
@@ -83,7 +84,7 @@
       </h1>
       <p class="hero-sub">
         AITerm is a cross-platform AI-powered terminal. Beyond cloud models, <strong>it runs local models to save on token costs and keep your data on-box</strong> — or bridges the Claude Code CLI to any provider you want.<br />
-        More than that, it treats what the AI produces as <strong>work</strong>: a <strong>task board</strong> lets you queue jobs, and AITerm dispatches them to Claude Code, tracks the outcome, and writes them up as a report.<br />
+        More than that, it treats what the AI produces as <strong>work</strong>: a <strong>task board</strong> lets you queue jobs, and AITerm dispatches them to Claude Code, tracks the outcome, and writes them up as a report; <strong>Agent Collaboration</strong> goes further, letting several AI engineers split the work, review each other, merge, and verify the result.<br />
         Autonomous agent loops, multi-database connections, a knowledge base, and MCP tools are all built in, on <strong>Tauri 2</strong>, <strong>React 19</strong>, and <strong>Rust</strong>.
       </p>
       <div class="hero-actions">
@@ -259,6 +260,68 @@
     </div>
   </section>
 
+  <!-- AGENT COLLABORATION -->
+  <section id="agents" class="section agentcollab">
+    <div class="container">
+      <div class="tb-lead">
+        <div class="tb-eyebrow">Multi-agent teams</div>
+        <h2 class="tb-title">One request, <span class="gradient-text">a whole AI team on it</span></h2>
+        <p class="tb-claim">
+          A single Claude Code session is powerful, but it is one person doing the work — and every hand-off between building, review, merging and testing goes through you.<br />
+          <strong>Agent Collaboration organizes AI into a team: engineers build in parallel, a reviewer checks every module, an integrator merges, and a verifier actually runs the result.</strong>
+        </p>
+      </div>
+
+      <div class="ac-roles">
+        <div class="ac-role" style="--c:#93c5fd">
+          <div class="ac-role-who">As many as you like</div>
+          <h3>Engineers</h3>
+          <p>Drag a module onto an engineer and work starts. Each engineer has its own git worktree and branch — real parallel work, no collisions. Claude Code or Codex.</p>
+        </div>
+        <div class="ac-role" style="--c:#fde68a">
+          <div class="ac-role-who">Every module</div>
+          <h3>Reviewer</h3>
+          <p>Reads the diff, never edits files, and passes or fails. A failure goes back to the same engineer with reasons, up to 2 rounds; a pass comes with a note on what the module provides.</p>
+        </div>
+        <div class="ac-role" style="--c:#86efac">
+          <div class="ac-role-who">Once all pass</div>
+          <h3>Integrator</h3>
+          <p>Merges every engineer's branch into one build, and confirms each engineer's latest work actually made it in.</p>
+        </div>
+        <div class="ac-role" style="--c:#5eead4">
+          <div class="ac-role-who">Optional</div>
+          <h3>Verifier</h3>
+          <p>Builds, runs and uses the merged result — for web apps it clicks through a browser and takes screenshots — checking each acceptance criterion. Your repo updates only when it passes.</p>
+        </div>
+      </div>
+
+      <figure class="ac-shot">
+        <img src="blog/images/agent-collaboration/s06-reviewing.png" width="2400" height="1500" decoding="async"
+             alt="The Agent Collaboration canvas with two engineers, a reviewer, an integrator and a verifier; the reviewer is reviewing a module" />
+        <figcaption>A real run (UI in Chinese): the reviewer is reviewing the ledger screen; hovering over the passed module shows the reviewer's hand-off note. Dispatch to passed verification took 3 min 17 s.</figcaption>
+      </figure>
+
+      <div class="tb-extras">
+        <div class="tb-extra">
+          <h4>Every agent sees the big picture</h4>
+          <p>Write a project brief once (AI refine helps) and every card reads it first, followed by an automatic team map: who owns what, progress, dependencies, and hand-off notes from finished modules.</p>
+        </div>
+        <div class="tb-extra">
+          <h4>Asks you only when it must</h4>
+          <p>When an agent needs a decision, the question lands in the Decisions inbox with a desktop notification and a Telegram message. Answer in the app or tap a button in Telegram, and the agent carries on.</p>
+        </div>
+        <div class="tb-extra">
+          <h4>Survives interruptions</h4>
+          <p>Cards that can run together are dispatched together; usage limits pause and resume after you switch accounts; an app restart picks the conversation back up. Per-project token caps, team templates and a guided tour are built in.</p>
+        </div>
+      </div>
+
+      <div class="ac-more">
+        <a href="blog/agent-collaboration-en.html" class="btn btn-outline">See the full run: AI Engineers Need a Team Too &#8594;</a>
+      </div>
+    </div>
+  </section>
+
   <!-- FEATURES -->
   <section id="features" class="section features">
     <div class="container">
@@ -295,6 +358,31 @@
           <div class="feature-icon">&#128203;</div>
           <h3>Task Board &amp; auto-dispatch</h3>
           <p>Queue work as cards and AITerm opens a tab, launches Claude Code, delivers the instructions, and marks the outcome. Includes projects, interactive mode, transcripts, AI work reports, and an archive. <a href="#taskboard">See more &#8594;</a></p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#129309;</div>
+          <h3>Agent Collaboration</h3>
+          <p>Organize several Claude Code / Codex agents into a team: engineers build in parallel, a reviewer checks every module, an integrator merges, and a verifier tests the result — every hand-off automatic. <a href="#agents">See more &#8594;</a></p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128161;</div>
+          <h3>Next-Step Suggestions</h3>
+          <p>While Claude Code, Codex or Gemini CLI runs in the terminal, a side panel reads the screen and suggests prompts to send next — click to fill, double-click to send. Set a goal and milestones; keys and passwords are masked before anything is sent.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128433;</div>
+          <h3>Computer-Use Hub</h3>
+          <p>A global hotkey summons AITerm anywhere and a tray icon keeps it running. Turn on Computer Use and the AI can see and operate other apps (screenshots, clicks, typing), asking you before it touches each app for the first time.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128268;</div>
+          <h3>OpenAI-Compatible API Server</h3>
+          <p>Point Cursor, Cline, Open WebUI or your own scripts at AITerm and use any provider you have set up in it — subscriptions, API keys or local models — routed through an alias table.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128421;</div>
+          <h3>System Integration</h3>
+          <p>On macOS and Linux, use AITerm as the system terminal; right-click "Open in AITerm" in macOS Finder and Windows Explorer; on Windows, run commands that need administrator rights elevated in the same tab.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">&#128187;</div>

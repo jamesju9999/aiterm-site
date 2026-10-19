@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Engineers Need a Team Too — AITerm</title>
+  <meta name="description" content="A single Claude Code session is powerful, but it is still one person doing the work. Here is how I got several AI engineers to split the work, review each other, merge, and verify the result — and a real run that went from dispatch to delivery in just over three minutes." />
+  <link rel="canonical" href="https://aiterm.win/blog/agent-collaboration-en.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AI Engineers Need a Team Too — AITerm" />
+  <meta property="og:description" content="A single Claude Code session is powerful, but it is still one person doing the work. Here is how I got several AI engineers to split the work, review each other, merge, and verify the result — and a real run that went from dispatch to delivery in just over three minutes." />
+  <meta property="og:url" content="https://aiterm.win/blog/agent-collaboration-en.html" />
+  <meta property="og:image" content="https://aiterm.win/og-image.png" />
+  <link rel="icon" href="../icon.png" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="blog.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo"><span class="logo-bracket">[</span>AI<span class="logo-term">Term</span><span class="logo-bracket">]</span></a>
+      <ul class="nav-links">
+        <li><a href="en.html">Blog</a></li>
+        <li><a href="../en.html#taskboard">Task Board</a></li><li><a href="../en.html#features">Features</a></li><li><a href="../en.html#install">Install</a></li>
+        <li><a href="index.html">中文</a></li>
+        <li><a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener" class="nav-github">GitHub</a></li>
+      </ul>
+    </div>
+  </nav>
+  <article class="post">
+    <div class="post-inner">
+      <a class="post-back" href="en.html">← All posts</a>
+      <h1 class="post-title">AI Engineers Need a Team Too</h1>
+      <div class="post-meta">2026-10-19</div>
+      <p class="post-sub">A single Claude Code session is powerful, but it is still one person doing the work. Here is how I got several AI engineers to split the work, review each other, merge, and verify the result — and a real run that went from dispatch to delivery in just over three minutes.</p>
+      <div class="post-body">
+<p>After enough time with Claude Code, I noticed that most of my effort wasn't going into writing requirements. It was going into <strong>being the human dispatcher</strong>.</p>
+<p>Ask it to build A, check it, say "looks good." Ask it to build B — B depends on A, so remind it what A looks like. Open a new chat to get B reviewed. Paste the review feedback back. Merge everything myself. Open a browser and click around to make sure it actually works.</p>
+<p>Every individual step, the AI did well. But <strong>every hand-off went through me</strong>.</p>
+<p>Claude Code does have subagents, and they are useful. But the model is still "one main session with a few temporary helpers": the big picture lives in the main session's head, everything shares one context window, and work happens on one checkout in sequence. Once the task gets big, the context fills up; try to do two things at once and they step on each other.</p>
+<p>So in AITerm, the terminal I build, I made something different: <strong>Agent Collaboration</strong>.</p>
+<figure><img src="images/agent-collaboration/01-compare-en.png" alt="One session with subagents, or a whole team?" loading="lazy"></figure>
+<hr>
+<h2>Organize the AI like a team</h2>
+<p>Agent Collaboration is a canvas. What you place on it are people, not tasks. There are four roles:</p>
+<ul>
+<li><strong>Engineers</strong> write the code. You can have several. Each one gets its own git worktree and branch, so they never touch each other's files — real parallel work.</li>
+<li><strong>The reviewer</strong> looks at every module when it's done. It reads the diff, never edits files, and decides pass or fail. A failure comes with reasons and goes straight back to the same engineer.</li>
+<li><strong>The integrator</strong> merges all the engineers' branches once every module has passed.</li>
+<li><strong>The verifier</strong> actually <em>runs</em> the merged build — for a web page, it opens a browser and uses it — checks each acceptance criterion one by one, and keeps screenshots as evidence.</li>
+</ul>
+<p>The whole flow looks like this:</p>
+<figure><img src="images/agent-collaboration/02-flow-en.png" alt="One module, from dispatch to delivery" loading="lazy"></figure>
+<p>You only do the two ends: <strong>split the work into modules and describe them clearly</strong>, then <strong>look at the result</strong>. Who picks up next, when, and who gets a failure back is all automatic.</p>
+<p>That's the theory. What does it actually look like? Below is the complete run I did this morning, building a small "ledger" web app from scratch. Every screenshot is the real screen at that moment. (The UI is shown in Chinese; AITerm also has an English UI.)</p>
+<hr>
+<h2>Hands-on: from an empty canvas to delivery</h2>
+<h3>1. Put the team on the canvas</h3>
+<p>Drag a role from the top bar onto the canvas and a settings dialog opens: name, role, prompt, whether to use Claude Code or Codex, which model, and which repository to work in.</p>
+<p>Roles can be loaded from a built-in list, each with a default prompt prefix. I made Engineer 1 a "frontend engineer" and left Engineer 2 as a general "code engineer."</p>
+<figure><img src="images/agent-collaboration/s02-role-menu.png" alt="Load a built-in role" loading="lazy"></figure>
+<p>Add a reviewer, an integrator and a verifier, and the team is complete. The connecting lines are drawn automatically to show how work will flow. The small card on the right is a getting-started tip telling you what to do next.</p>
+<figure><img src="images/agent-collaboration/s01-team.png" alt="The team is ready" loading="lazy"></figure>
+<h3>2. Write a project brief that everyone reads</h3>
+<p>I added this step later, and I now think it matters most.</p>
+<p>A single session knows what the whole project is about. But on a team, every card is a fresh session. Give them nothing, and Engineer 1 won't know "no frameworks," Engineer 2 won't know "amounts are always integers," and what they build separately may not fit together.</p>
+<p>So each project has a <strong>project brief</strong>. You write it once, and <strong>every agent reads it before starting work</strong>.</p>
+<p>I typed a few casual sentences and hit "AI refine." It organized them into goals, tech choices, folder conventions, shared rules and out-of-scope items. "Undo" is there if you don't like it.</p>
+<figure><img src="images/agent-collaboration/s03-brief.png" alt="Project brief with AI refine" loading="lazy"></figure>
+<h3>3. Write the work in the module library</h3>
+<p>The library on the left holds work that hasn't started yet. I wrote two modules:</p>
+<ul>
+<li><strong>Data layer</strong>: <code>js/store.js</code>, handles localStorage and exposes <code>add / remove / list / summary</code>.</li>
+<li><strong>Ledger screen</strong>: <code>index.html</code> — the form, the list, and this month's summary.</li>
+</ul>
+<p>One thing is deliberate here: both modules start <strong>at the same time</strong>, so the screen's branch <strong>cannot see</strong> the data layer's code. I spelled out the interface on both sides and told the screen side not to create <code>store.js</code> itself. That's the price of parallel work — you have to define the boundaries first.</p>
+<figure><img src="images/agent-collaboration/s04-library.png" alt="Module library" loading="lazy"></figure>
+<h3>4. Dragging is dispatching</h3>
+<p>Drag "data layer" onto Engineer 2 and "ledger screen" onto Engineer 1, and work begins.</p>
+<p>AITerm creates a worktree for each engineer, opens a tab, launches Claude Code and sends a prompt made of role + project context + card content. Each card shows which module it's on, how long it has been running and how many tokens it has used.</p>
+<p>This is 09:51: Engineer 2's data layer is done and has passed review (green); Engineer 1 is still building the screen (blue).</p>
+<figure><img src="images/agent-collaboration/s05-running.png" alt="Two engineers working in parallel" loading="lazy"></figure>
+<h3>5. The reviewer checks — and writes a hand-off note</h3>
+<p>A finished module is committed automatically and handed to the reviewer, which reads the diff in a separate worktree and judges it against the requirements.</p>
+<p>On a pass, it also writes a sentence or two on <strong>what this module provides</strong>. That's the <strong>hand-off note</strong>. From then on, every card's team map shows a "provides: …" line under that module, so later engineers know how to use it without reading the code.</p>
+<p>Here the reviewer is reviewing Engineer 1's screen (the flowing yellow line). Hovering over Engineer 2's module shows the reviewer's hand-off note.</p>
+<figure><img src="images/agent-collaboration/s06-reviewing.png" alt="Under review, plus the data layer&#x27;s hand-off note" loading="lazy"></figure>
+<h3>6. Sent back on the first try</h3>
+<p>Then the reviewer <strong>sent Engineer 1's screen back</strong>.</p>
+<p>The reason was specific: <code>renderList()</code> re-sorted the result of <code>store.list()</code> and assumed <code>list()</code> returned oldest-first. In fact <code>list()</code> is already newest-first, so sorting again <strong>reversed the order of entries on the same day</strong> — add two entries in a row and the newer one shows up below.</p>
+<p>That kind of bug doesn't crash anything, and tests may not catch it, but a user notices right away. The reviewer caught it by reading both sides of the code.</p>
+<figure><img src="images/agent-collaboration/s07-sent-back.png" alt="A module sent back (orange ↻)" loading="lazy"></figure>
+<p>A fix card went back to Engineer 1 automatically. This is what it saw before starting:</p>
+<figure><img src="images/agent-collaboration/03-prompt-en.png" alt="What an agent sees before it starts a card" loading="lazy"></figure>
+<p>Look at the team map in the middle: Engineer 1 knows which module it owns, knows the data layer has passed, and <strong>can see directly what the data layer provides</strong>. The review feedback and the original requirement follow.</p>
+<p>It fixed the issue in about ten seconds and committed again. The reviewer took another look and passed it.</p>
+<h3>7. Merge, then actually use it</h3>
+<p>With both modules passed, the integrator merged the two branches, and the verifier took over.</p>
+<p>The verifier doesn't just read code. It opened the merged build in a browser and <strong>actually used it</strong>: added income and expenses, checked the list order, checked the monthly summary, entered invalid amounts, reloaded to see the data persist, deleted an entry, and shrank the window to phone width. Every check came with a screenshot.</p>
+<figure><img src="images/agent-collaboration/s08-done.png" alt="All done, with the activity log" loading="lazy"></figure>
+<p>The verification report: 8 acceptance criteria, 8 passed.</p>
+<figure><img src="images/agent-collaboration/s09-verify-report.png" alt="Verification report" loading="lazy"></figure>
+<p>Once verification passed, AITerm fast-forwarded my original repository to the integrated build. <code>index.html</code>, <code>css/</code>, <code>js/</code> and <code>tests/</code> are all there, and opening it in a browser just works:</p>
+<figure><img src="images/agent-collaboration/s10-result.png" alt="The finished ledger (the verifier&#x27;s evidence screenshot)" loading="lazy"></figure>
+<p>From the first module starting (09:50:04) to verification passing (09:53:21): <strong>3 minutes 17 seconds</strong>, including one round of fixes. The whole run used about 1.37 million tokens.</p>
+<hr>
+<h2>Giving a group of agents a shared big picture</h2>
+<p>Looking back, what made this run go smoothly wasn't how strong the model is, but <strong>how much each agent knew before it started</strong>. A single session's big picture lives in its own context. A team's big picture has to be <strong>written down and handed to everyone</strong>.</p>
+<p>In Agent Collaboration, that picture has three layers:</p>
+<ol>
+<li><strong>Project brief</strong> — written once by you, shared by everyone: goals, tech choices, conventions, what's out of scope.</li>
+<li><strong>Team map</strong> — generated automatically: who owns which module, how far along it is, what it depends on, and which one is yours.</li>
+<li><strong>Hand-off notes</strong> — written by the reviewer on a pass. Not just "someone else finished," but "here's how to use what they built."</li>
+</ol>
+<p>Together these are usually a thousand or two tokens. Next to the hundreds of thousands a card can use, that's around one percent more, and since it sits at the very start of the prompt, later turns benefit from prompt caching.</p>
+<hr>
+<h2>When to use which</h2>
+<p>I don't think Agent Collaboration replaces a single session. I use both every day:</p>
+<ul>
+<li><strong>One task, clear scope, want to chat while it works</strong>: just open a Claude Code session. Fastest, lowest overhead.</li>
+<li><strong>Work that splits into modules with interfaces between them, and needs someone checking it</strong>: use Agent Collaboration. You spend a few extra minutes defining the boundaries; you get real parallelism, a review for every module, a hands-on test of the merged build, and a verification report you can keep.</li>
+</ul>
+<p>A few things this post didn't cover: when an agent needs you to decide something, it can stop and ask in a "decisions" inbox (or on Telegram); when a subscription runs out of usage, it waits and picks up again after you switch accounts; and if the app restarts, a half-finished card resumes the same conversation.</p>
+<p>All of these come from the same idea: <strong>AI is already good at doing the work. What it was missing is a way to hand off work like a team.</strong></p>
+<hr>
+<p><strong>AITerm</strong> is the cross-platform AI terminal I build. Agent Collaboration, the task board and automatic dispatch are all built in. It's open source under Apache 2.0 and runs on macOS, Windows and Linux.</p>
+<p>🌐 Website: <a href="https://aiterm.win/" target="_blank" rel="noopener">https://aiterm.win/</a> 💻 Source &amp; downloads: <a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener">https://github.com/jamesju9999/AITERM</a></p>
+<hr>
+<p><em>If this was useful, a clap would mean a lot (you can clap up to 50 times), and follow me for more hands-on posts about AI-assisted development.</em></p>
+      </div>
+
+    </div>
+  </article>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© 2026 AITerm · Apache 2.0 · <a href="https://github.com/jamesju9999/AITERM" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </footer>
+</body>
+</html>

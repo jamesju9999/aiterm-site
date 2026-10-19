@@ -34,6 +34,15 @@ OUT = SITE / "blog"
 # 還沒發佈——那時候頁尾就不會出現連結，不會生出一個指向空白的按鈕。
 ARTICLES = [
     {
+        "slug": "agent-collaboration",
+        "dir": "Agent 協作",
+        "zh": "AI工程師也需要一個團隊.md",
+        "en": "ai-engineers-need-a-team-too.md",
+        "date": "2026-10-19",
+        "medium_zh": None,
+        "medium_en": None,
+    },
+    {
         "slug": "work-still-needs-organizing",
         "dir": "ArrangeAITask",
         "zh": "AI再厲害，工作還是得有人安排.md",
